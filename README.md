@@ -7,7 +7,7 @@ git commit -m "Fixed bug in the login feature"
 git push origin main
 <!--->
 
-<!--->
+<!---> 
 How to run the server (Use these three changes):
 
 python3 -m venv .venv                                                 
