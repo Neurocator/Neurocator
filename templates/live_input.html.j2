@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture Tracker - Input Points</title>
+</head>
+<body>
+    <h1>Lecture Tracker - Input Points</h1>
+    <form method="post" action="{{ url_for('live') }}">
+        <div>
+            <label for="points">Enter points to detect (one per line):</label><br>
+            <textarea name="points" id="points" rows="10" cols="50"></textarea>
+        </div>
+        <div>
+            <button type="submit">Submit Points</button>
+        </div>
+    </form>
+</body>
+</html>

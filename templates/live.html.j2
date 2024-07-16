@@ -21,18 +21,14 @@
 <body>
     <h1>Lecture Tracker</h1>
     <div id="bulletPoints">
-        <div class="bullet-point" id="point0">Introduction</div>
-        <div class="bullet-point" id="point1">Main Topic</div>
-        <div class="bullet-point" id="point2">Conclusion</div>
+        {% for point in points %}
+        <div class="bullet-point" id="point{{ loop.index0 }}">{{ point.text }}</div>
+        {% endfor %}
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const points = [
-                {text: "Introduction", covered: false},
-                {text: "Main Topic", covered: false},
-                {text: "Conclusion", covered: false}
-            ];
-
+            const points = {{ points|tojson }};
+            
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'en-US';
             recognition.interimResults = false;
@@ -68,4 +64,3 @@
 </body>
 </html>
 {% endblock %}
-</html>
