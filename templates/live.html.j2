@@ -1,5 +1,6 @@
 {% extends "base.html.j2" %}
 
+{% block body %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,53 +18,76 @@
         }
     </style>
 </head>
-{% block body %}
-
+<body>
     <h1>Lecture Tracker</h1>
     <div id="bulletPoints">
-        <div class="bullet-point" id="point0">Introduction</div>
-        <div class="bullet-point" id="point1">Main Topic</div>
-        <div class="bullet-point" id="point2">Conclusion</div>
+        <!-- Bullet points will be inserted here -->
     </div>
+    <input type="text" id="userInput" placeholder="Enter a point and press Enter">
+    <button id="startRecognition">Start Recognition</button>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const points = [
-                {text: "Introduction", covered: false},
-                {text: "Main Topic", covered: false},
-                {text: "Conclusion", covered: false}
-            ];
+            const points = [];
 
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
+            const addBulletPoint = (text) => {
+                const pointIndex = points.length;
+                points.push({ text, covered: false });
+                const bulletPointDiv = document.createElement('div');
+                bulletPointDiv.className = 'bullet-point';
+                bulletPointDiv.id = `point${pointIndex}`;
+                bulletPointDiv.innerText = text;
+                document.getElementById('bulletPoints').appendChild(bulletPointDiv);
+            };
 
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript.toLowerCase();
-                console.log('Transcript:', transcript);
-                fetch('/transcribe', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ transcript, points })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach((point, index) => {
-                        if (point.covered) {
-                            document.getElementById(`point${index}`).classList.add('crossed-off');
-                        }
+            const inputField = document.getElementById('userInput');
+            inputField.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    const text = inputField.value.trim();
+                    if (text) {
+                        addBulletPoint(text);
+                        inputField.value = '';
+                    }
+                }
+            });
+
+            if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    console.log('Transcript:', transcript);
+                    fetch('/transcribe', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ transcript, points })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach((point, index) => {
+                            if (point.covered) {
+                                document.getElementById(`point${index}`).classList.add('crossed-off');
+                            }
+                        });
                     });
+                };
+
+                document.getElementById('startRecognition').addEventListener('click', () => {
+                    recognition.start();
                 });
-            };
 
-            recognition.start();
-
-            recognition.onend = () => {
-                recognition.start();
-            };
+                recognition.onend = () => {
+                    recognition.start();
+                };
+            } else {
+                alert('Speech recognition not supported in this browser.');
+            }
         });
     </script>
+</body>
 {% endblock %}
 </html>
