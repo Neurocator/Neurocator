@@ -12,7 +12,7 @@ def forum():
 
 @app.route('/live')
 def live():
-    return render_template("live.html")
+    return render_template("live.html.j2")
 
 @app.route('/longtermplanning')
 def planning():

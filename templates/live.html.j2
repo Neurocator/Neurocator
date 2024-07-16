@@ -1,3 +1,5 @@
+{% extends "base.html.j2" %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +17,8 @@
         }
     </style>
 </head>
-<body>
+{% block body %}
+
     <h1>Lecture Tracker</h1>
     <div id="bulletPoints">
         <div class="bullet-point" id="point0">Introduction</div>
@@ -62,5 +65,5 @@
             };
         });
     </script>
-</body>
+{% endblock %}
 </html>
