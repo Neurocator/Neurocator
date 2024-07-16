@@ -1,38 +1,48 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lecture Tracker</title>
-    <style>
-        .bullet-point {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-        .crossed-off {
-            text-decoration: line-through;
-        }
-    </style>
-</head>
-<body>
-    <h1>Lecture Tracker</h1>
-    <div id="bulletPoints">
-        {% for point in points %}
-        <div class="bullet-point" id="point{{ loop.index0 }}">{{ point.text }}</div>
-        {% endfor %}
+<h1>Lecture Tracker</h1>
+<form id="pointsForm">
+    <div>
+        <label for="points">Enter points to detect (one per line):</label><br>
+        <textarea name="points" id="points" rows="10" cols="50"></textarea>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const points = {{ points|tojson }};
+    <div>
+        <button type="submit">Submit Points</button>
+    </div>
+</form>
+<ul id="bulletPoints" class="bullet-points-list"></ul>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('pointsForm');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const pointsTextarea = document.getElementById('points');
+            const points = pointsTextarea.value.split('\n').map(point => ({ text: point.trim(), covered: false }));
             
+            // Render the points as bullet points
+            const bulletPointsList = document.getElementById('bulletPoints');
+            bulletPointsList.innerHTML = '';
+            points.forEach((point, index) => {
+                const pointItem = document.createElement('li');
+                pointItem.className = 'bullet-point';
+                pointItem.id = `point${index}`;
+                pointItem.textContent = point.text;
+                bulletPointsList.appendChild(pointItem);
+            });
+
+            startRecognition(points);
+        });
+
+        function startRecognition(points) {
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'en-US';
             recognition.interimResults = false;
             recognition.maxAlternatives = 1;
+
+            recognition.onstart = () => {
+                console.log('Speech recognition started');
+            };
 
             recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript.toLowerCase();
@@ -54,13 +64,32 @@
                 });
             };
 
-            recognition.start();
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error', event);
+            };
 
             recognition.onend = () => {
+                console.log('Speech recognition ended');
                 recognition.start();
             };
-        });
-    </script>
-</body>
-</html>
+
+            recognition.start();
+        }
+    });
+</script>
+<style>
+    .bullet-points-list {
+        list-style-type: disc;
+        padding-left: 20px;
+        border: 1px solid #ccc;
+        margin-top: 20px;
+        padding: 10px;
+    }
+    .bullet-point {
+        margin-bottom: 5px;
+    }
+    .crossed-off {
+        text-decoration: line-through;
+    }
+</style>
 {% endblock %}

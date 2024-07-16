@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from utils import is_point_covered, process_transcript
 
@@ -15,7 +15,7 @@ def live():
         points = request.form.getlist('points')
         points = [{"text": point, "covered": False} for point in points]
         return render_template('live.html.j2', points=points)
-    return render_template('live_input.html.j2')
+    return render_template('live.html.j2', points=[])
 
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
