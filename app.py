@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ def forum():
 
 @app.route('/live')
 def live():
-    return render_template("live_assistance.html")
+    return render_template("live.html")
 
 @app.route('/about')
 def about():
