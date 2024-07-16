@@ -8,6 +8,7 @@
     <title>My Flask App</title>
     <!-- Add your CSS framework here, for example Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="static/style.css"/>
 </head>
 <body>
     <!-- Navbar -->
@@ -56,9 +57,17 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <!-- Your main content goes here -->
                 <h1 class="text-3xl font-bold text-gray-900">Welcome! What would you like to do today?</h1>
-                <p class="mt-4 text-gray-600">This is a simple HTML page served by Flask.</p>
             </div>
         </div>
     </div>
+
+
+    <!-- Page Options -->
+    <!-- <form method = "POST" action="forum"> form is going to be submitted via GET request-->  
+    <a href="/forum">
+        <button type="submit" class="page-option">FORUM</button>
+    </a>
+        
+
 </body>
 </html>
