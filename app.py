@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_from_directory
 from flask_cors import CORS
 import spacy
 
@@ -6,12 +6,26 @@ app = Flask(__name__)
 CORS(app)
 nlp = spacy.load("en_core_web_sm")
 
+# Synonym dictionary for demonstration purposes
+synonyms = {
+    "introduction": ["intro", "beginning", "start"],
+    "main topic": ["main subject", "central theme", "core idea"],
+    "conclusion": ["end", "summary", "wrap-up"]
+}
+
 def is_point_covered(transcript_tokens, point):
     point_text_lower = point.lower()
-    return point_text_lower in transcript_tokens
+    if point_text_lower in transcript_tokens:
+        return True
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
+    for synonym in synonyms.get(point_text_lower, []):
+        if synonym in transcript_tokens:
+            return True
+
+    return False
+
+@app.route('/')
+def index():
     return render_template('index.html.j2')
 
 @app.route('/forum', methods=['GET', 'POST'])
@@ -34,7 +48,7 @@ def resources():
 def about():
     return render_template('about_us.html.j2')
 
-@app.route('/live', methods=['POST'])
+@app.route('/transcribe', methods=['POST'])
 def transcribe():
     data = request.get_json()
     transcript = data['transcript']
