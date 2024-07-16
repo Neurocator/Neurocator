@@ -14,6 +14,14 @@ def forum():
 def live():
     return render_template("live.html")
 
+@app.route('/longtermplanning')
+def planning():
+    return render_template("longtermplanning.html.j2")
+
+@app.route('/resources')
+def resources():
+    return render_template("resources.html.j2")
+
 @app.route('/about')
 def about():
     return render_template("about_us.html")
