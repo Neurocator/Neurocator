@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET','POST'])
 def home():
-    return render_template('index.html')
+    return render_template('index.html.j2')
 
 @app.route('/forum', methods=['GET','POST'])
 def forum():
