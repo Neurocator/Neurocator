@@ -3,6 +3,16 @@ from flask_cors import CORS
 from utils import is_point_covered, process_transcript
 import sqlite3
 
+import mysql.connector
+mydb = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "Teamb1#123",
+    database = "neurocator",
+    auth_plugin='mysql_native_password'
+)
+cursor = mydb.cursor()
+
 app = Flask(__name__)
 CORS(app)
 

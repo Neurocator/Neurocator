@@ -1,0 +1,25 @@
+<head>
+    <title>Neurocator!</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+</head>
+
+
+{% block body %}
+
+<div>
+  <form method = "POST" class="logincontainer">
+    <h1>Welcome to <span class="yellow">Neurocator</span><span class="red">!</span></h1>
+    <p class="login-message">Already a user? Please login below!</p>
+    <label class="question"><b>Username:</b></label>
+    <input placeholder="Enter Username" name="username" class="answer" required>
+    <label class="question"><b>Password:</b></label>
+    <input type="password" placeholder="Enter Password" name="password" class="answer" required>
+    <button type="submit">Log In!</button>
+    <br>
+    <a href="signup">Don't have an account? Signup here!</a>
+  </form>
+</div>
+
+
+
+{% endblock %}
