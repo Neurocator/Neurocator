@@ -14,6 +14,7 @@ module.exports = {
              'primary': '#D7E6EA',
              'secondary': '#82C3E0',
              'tertiary': '#496A79',
+             'background': '#f4ece5',
           },
         
           brand2: {
