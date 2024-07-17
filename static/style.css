@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('opendyslexic-bold.ttf') format('truetype'),
+         url('opendyslexic-regular.ttf') format('truetype');
+    /* Add more src lines if you have different font weights/styles */
+    font-weight: normal; /* Adjust weight if needed */
+    font-style: normal; /* Adjust style if needed */
+}
+
+body, html {
+    /* font-family: 'opendyslexic';
+    src: url('http://dyslexicfonts.com/fonts/OpenDyslexic-Regular.otf'); */
+    font-family: 'Open-Dyslexic', sans-serif;
+}
+
+
 .page-option {
     background-color: #b286e0; 
     border: none;
@@ -21,4 +37,39 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+
+.logincontainer {
+    position: absolute;
+    top: 45%; 
+    /* center vertically from https://www.w3schools.com/howto/howto_css_center-vertical.asp */
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%); 
+    margin: 20px;
+    right: 0;
+    text-align: left;
+    max-width: 700px;
+    height: fit-content;
+    padding: 16px;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    opacity: .85;
+  }
+
+.login-message {
+    color: black;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.question {
+    font-size: 30px;
+    line-height: 60px;
+    margin-bottom: 20px;
+}
+
+.answer {
+    margin: auto;
+    display: block;
+    margin-bottom: 0;
 }
