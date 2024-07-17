@@ -85,11 +85,10 @@
             </form>
             <ul>
                 {% for task in tasks %}
-                <li class="{{ 'completed' if task[2] else '' }}">
-                    <input type="checkbox" {% if task[2] %}checked{% endif %} onclick="this.nextElementSibling.submit()">
+                <li>
                     <form action="/complete/{{ task[0] }}" method="POST" style="display: inline;">
+                        <input type="checkbox" onclick="this.form.submit()">
                         {{ task[1] }}
-                        <button type="submit" class="complete-button" style="display:none;">{{ 'Undo' if task[2] else 'Complete' }}</button>
                     </form>
                 </li>
                 {% endfor %}
@@ -99,11 +98,10 @@
             <h1>Insert Task</h1>
             <ul>
                 {% for task in tasks %}
-                <li class="{{ 'completed' if task[2] else '' }}">
-                    <input type="checkbox" {% if task[2] %}checked{% endif %} onclick="this.nextElementSibling.submit()">
+                <li>
                     <form action="/complete/{{ task[0] }}" method="POST" style="display: inline;">
+                        <input type="checkbox" onclick="this.form.submit()">
                         {{ task[1] }}
-                        <button type="submit" class="complete-button" style="display:none;">{{ 'Undo' if task[2] else 'Complete' }}</button>
                     </form>
                 </li>
                 {% endfor %}
