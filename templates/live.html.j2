@@ -6,8 +6,7 @@
 
     <div class="input-container">
         <input type="text" id="mainPointInput" class="input-box" placeholder="Enter main point">
-        <input type="text" id="subPointInput" class="input-box" placeholder="Enter subpoint">
-        <button id="addPointBtn" class="btn btn-add">ADD</button>
+        <button id="addMainPointBtn" class="btn btn-add">ADD MAIN POINT</button>
     </div>
 
     <div class="list-container">
@@ -18,33 +17,21 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const mainPointInput = document.getElementById('mainPointInput');
-        const subPointInput = document.getElementById('subPointInput');
-        const addPointBtn = document.getElementById('addPointBtn');
+        const addMainPointBtn = document.getElementById('addMainPointBtn');
         const bulletPointsList = document.getElementById('bulletPoints');
         
         let points = [];
 
-        addPointBtn.addEventListener('click', () => {
+        addMainPointBtn.addEventListener('click', () => {
             const mainPointText = mainPointInput.value.trim();
-            const subPointText = subPointInput.value.trim();
 
             if (mainPointText) {
-                let mainPoint = points.find(point => point.text === mainPointText);
-
-                if (!mainPoint) {
-                    mainPoint = { text: mainPointText, subpoints: [], covered: false };
-                    points.push(mainPoint);
-                }
-
-                if (subPointText) {
-                    mainPoint.subpoints.push({ text: subPointText, covered: false });
-                }
-
+                const mainPoint = { text: mainPointText, subpoints: [], covered: false };
+                points.push(mainPoint);
                 renderPoints();
             }
 
             mainPointInput.value = '';
-            subPointInput.value = '';
         });
 
         function renderPoints() {
@@ -53,7 +40,12 @@
                 const mainPointItem = document.createElement('li');
                 mainPointItem.className = 'bullet-point main-point';
                 mainPointItem.id = `mainPoint${mainIndex}`;
-                mainPointItem.innerHTML = `${mainPoint.text} <span class="delete-btn" data-index="${mainIndex}">🗑️</span>`;
+                mainPointItem.innerHTML = `
+                    ${mainPoint.text} 
+                    <button class="add-subpoint-btn" data-index="${mainIndex}">+</button>
+                    <span class="delete-btn" data-index="${mainIndex}">🗑️</span>
+                    <input type="text" class="input-box subpoint-input" placeholder="Enter subpoint" data-index="${mainIndex}" style="display:none;">
+                `;
                 bulletPointsList.appendChild(mainPointItem);
 
                 if (mainPoint.subpoints.length > 0) {
@@ -68,6 +60,30 @@
                     });
                     bulletPointsList.appendChild(subpointsList);
                 }
+            });
+
+            document.querySelectorAll('.add-subpoint-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    const mainIndex = btn.getAttribute('data-index');
+                    const subpointInput = document.querySelector(`.subpoint-input[data-index="${mainIndex}"]`);
+                    subpointInput.style.display = 'inline-block';
+                    subpointInput.focus();
+                });
+            });
+
+            document.querySelectorAll('.subpoint-input').forEach(input => {
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        const mainIndex = input.getAttribute('data-index');
+                        const subpointText = input.value.trim();
+                        if (subpointText) {
+                            points[mainIndex].subpoints.push({ text: subpointText, covered: false });
+                            renderPoints();
+                        }
+                        input.value = '';
+                        input.style.display = 'none';
+                    }
+                });
             });
 
             document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -87,7 +103,7 @@
         }
 
         // Speech Recognition Implementation
-        function startRecognition(points) {
+        function startRecognition() {
             if (!('webkitSpeechRecognition' in window)) {
                 alert("Your browser doesn't support Speech Recognition.");
                 return;
@@ -117,10 +133,15 @@
                     data.forEach((point, mainIndex) => {
                         if (point.covered) {
                             document.getElementById(`mainPoint${mainIndex}`).classList.add('crossed-off');
+                        } else {
+                            document.getElementById(`mainPoint${mainIndex}`).classList.remove('crossed-off');
                         }
                         point.subpoints.forEach((subpoint, subIndex) => {
+                            const subpointElement = document.getElementById(`mainPoint${mainIndex}_subpoint${subIndex}`);
                             if (subpoint.covered) {
-                                document.getElementById(`mainPoint${mainIndex}_subpoint${subIndex}`).classList.add('crossed-off');
+                                subpointElement.classList.add('crossed-off');
+                            } else {
+                                subpointElement.classList.remove('crossed-off');
                             }
                         });
                     });
@@ -137,14 +158,16 @@
             recognition.onend = () => {
                 console.log('Speech recognition ended');
                 // Restart the recognition to continue listening
-                recognition.start();
+                setTimeout(() => {
+                    recognition.start();
+                }, 1000); // Adding a slight delay to avoid rapid restarts
             };
 
             recognition.start();
         }
 
         // Initialize Speech Recognition
-        startRecognition(points);
+        startRecognition();
     });
 </script>
 
@@ -223,6 +246,14 @@
         margin-left: auto;
         cursor: pointer;
     }
+    .bullet-point .add-subpoint-btn {
+        margin-left: 10px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+    }
     .subpoints-list {
         list-style: circle;
         padding-left: 20px;
@@ -234,6 +265,9 @@
     .crossed-off {
         text-decoration: line-through;
         color: #a9a9a9;
+    }
+    .subpoint-input {
+        margin-top: 10px;
     }
 </style>
 {% endblock %}

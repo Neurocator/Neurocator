@@ -69,7 +69,6 @@ def about():
     return render_template('about_us.html.j2')
 
 # To-Do List routes
-
 @app.route('/todo', methods=['GET', 'POST'])
 def to_do_list():
     if request.method == 'POST':
@@ -90,13 +89,17 @@ def to_do_list():
 
 @app.route('/complete/<int:task_id>', methods=['POST'])
 def complete_task(task_id):
-    with sqlite3.connect('database.db') as conn:
-        c = conn.cursor()
-        c.execute('SELECT completed FROM tasks WHERE rowid = ?', (task_id,))
-        completed = c.fetchone()[0]
-        c.execute('UPDATE tasks SET completed = ? WHERE rowid = ?', (not completed, task_id))
-        conn.commit()
-    return redirect(url_for('to_do_list'))
+    try:
+        with sqlite3.connect('database.db') as conn:
+            c = conn.cursor()
+            c.execute('SELECT completed FROM tasks WHERE rowid = ?', (task_id,))
+            completed = c.fetchone()[0]
+            c.execute('UPDATE tasks SET completed = ? WHERE rowid = ?', (not completed, task_id))
+            conn.commit()
+        return redirect(url_for('to_do_list'))
+    except Exception as e:
+        print(f"Error completing task {task_id}: {e}")
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/faq')
 def faq():
