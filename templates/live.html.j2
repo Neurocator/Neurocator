@@ -1,82 +1,51 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
-<div class="container">
+<div class="container" id="mainContainer">
     <h1>Lecture Tracker</h1>
-    <form id="pointsForm" class="form">
-        <div id="mainPointsContainer" class="form-group">
-            <label for="mainPoints">Enter main points and their subpoints:</label><br>
-            <div class="main-point">
-                <input type="text" name="mainPoints" class="main-point-input" placeholder="Main point"><br>
-                <div class="subpoints">
-                    <input type="text" name="subpoints" class="subpoint-input" placeholder="Subpoint">
-                </div>
-                <button type="button" class="add-subpoint-btn btn-secondary">Add Subpoint</button>
-            </div>
-        </div>
-        <button type="button" id="addMainPointBtn" class="btn btn-primary">Add Main Point</button>
-        <button type="submit" class="btn btn-success">Submit Points</button>
-    </form>
-    <ul id="bulletPoints" class="bullet-points-list"></ul>
+
+    <div class="input-container">
+        <input type="text" id="mainPointInput" class="input-box" placeholder="Enter main point">
+        <button id="addMainPointBtn" class="btn btn-add">ADD MAIN POINT</button>
+    </div>
+
+    <div class="list-container">
+        <ul id="bulletPoints" class="bullet-points-list"></ul>
+    </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const mainPointsContainer = document.getElementById('mainPointsContainer');
+        const mainPointInput = document.getElementById('mainPointInput');
         const addMainPointBtn = document.getElementById('addMainPointBtn');
-        const form = document.getElementById('pointsForm');
+        const bulletPointsList = document.getElementById('bulletPoints');
+        
+        let points = [];
 
         addMainPointBtn.addEventListener('click', () => {
-            const mainPointDiv = document.createElement('div');
-            mainPointDiv.classList.add('main-point');
-            mainPointDiv.innerHTML = `
-                <input type="text" name="mainPoints" class="main-point-input" placeholder="Main point"><br>
-                <div class="subpoints">
-                    <input type="text" name="subpoints" class="subpoint-input" placeholder="Subpoint">
-                </div>
-                <button type="button" class="add-subpoint-btn btn-secondary">Add Subpoint</button>
-            `;
-            mainPointsContainer.appendChild(mainPointDiv);
+            const mainPointText = mainPointInput.value.trim();
 
-            mainPointDiv.querySelector('.add-subpoint-btn').addEventListener('click', () => {
-                const subpointsDiv = mainPointDiv.querySelector('.subpoints');
-                const subpointInput = document.createElement('input');
-                subpointInput.type = 'text';
-                subpointInput.name = 'subpoints';
-                subpointInput.classList.add('subpoint-input');
-                subpointInput.placeholder = 'Subpoint';
-                subpointsDiv.appendChild(subpointInput);
-            });
+            if (mainPointText) {
+                const mainPoint = { text: mainPointText, subpoints: [], covered: false };
+                points.push(mainPoint);
+                renderPoints();
+            }
+
+            mainPointInput.value = '';
         });
 
-        mainPointsContainer.querySelector('.add-subpoint-btn').addEventListener('click', (event) => {
-            const subpointsDiv = event.target.previousElementSibling;
-            const subpointInput = document.createElement('input');
-            subpointInput.type = 'text';
-            subpointInput.name = 'subpoints';
-            subpointInput.classList.add('subpoint-input');
-            subpointInput.placeholder = 'Subpoint';
-            subpointsDiv.appendChild(subpointInput);
-        });
-
-        form.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const mainPoints = [];
-            document.querySelectorAll('.main-point').forEach(mainPointDiv => {
-                const mainPointText = mainPointDiv.querySelector('.main-point-input').value.trim();
-                const subpoints = Array.from(mainPointDiv.querySelectorAll('.subpoint-input'))
-                                        .map(subpointInput => subpointInput.value.trim())
-                                        .filter(subpoint => subpoint !== '');
-                mainPoints.push({ text: mainPointText, subpoints: subpoints.map(subpoint => ({ text: subpoint, covered: false })), covered: false });
-            });
-
-            // Render the points as bullet points with subpoints
-            const bulletPointsList = document.getElementById('bulletPoints');
+        function renderPoints() {
             bulletPointsList.innerHTML = '';
-            mainPoints.forEach((mainPoint, mainIndex) => {
+            points.forEach((mainPoint, mainIndex) => {
                 const mainPointItem = document.createElement('li');
                 mainPointItem.className = 'bullet-point main-point';
                 mainPointItem.id = `mainPoint${mainIndex}`;
-                mainPointItem.textContent = mainPoint.text;
+                mainPointItem.innerHTML = `
+                    ${mainPoint.text} 
+                    <button class="add-subpoint-btn" data-index="${mainIndex}">+</button>
+                    <span class="delete-btn" data-index="${mainIndex}">🗑️</span>
+                    <input type="text" class="input-box subpoint-input" placeholder="Enter subpoint" data-index="${mainIndex}" style="display:none;">
+                `;
                 bulletPointsList.appendChild(mainPointItem);
 
                 if (mainPoint.subpoints.length > 0) {
@@ -86,17 +55,60 @@
                         const subpointItem = document.createElement('li');
                         subpointItem.className = 'bullet-point subpoint';
                         subpointItem.id = `mainPoint${mainIndex}_subpoint${subIndex}`;
-                        subpointItem.textContent = subpoint.text;
+                        subpointItem.innerHTML = `${subpoint.text} <span class="delete-btn" data-main-index="${mainIndex}" data-sub-index="${subIndex}">🗑️</span>`;
                         subpointsList.appendChild(subpointItem);
                     });
                     bulletPointsList.appendChild(subpointsList);
                 }
             });
 
-            startRecognition(mainPoints);
-        });
+            document.querySelectorAll('.add-subpoint-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    const mainIndex = btn.getAttribute('data-index');
+                    const subpointInput = document.querySelector(`.subpoint-input[data-index="${mainIndex}"]`);
+                    subpointInput.style.display = 'inline-block';
+                    subpointInput.focus();
+                });
+            });
 
-        function startRecognition(points) {
+            document.querySelectorAll('.subpoint-input').forEach(input => {
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        const mainIndex = input.getAttribute('data-index');
+                        const subpointText = input.value.trim();
+                        if (subpointText) {
+                            points[mainIndex].subpoints.push({ text: subpointText, covered: false });
+                            renderPoints();
+                        }
+                        input.value = '';
+                        input.style.display = 'none';
+                    }
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (event) => {
+                    const mainIndex = btn.getAttribute('data-index');
+                    const subIndex = btn.getAttribute('data-sub-index');
+
+                    if (subIndex === null) {
+                        points.splice(mainIndex, 1);
+                    } else {
+                        points[mainIndex].subpoints.splice(subIndex, 1);
+                    }
+
+                    renderPoints();
+                });
+            });
+        }
+
+        // Speech Recognition Implementation
+        function startRecognition() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Your browser doesn't support Speech Recognition.");
+                return;
+            }
+            
             const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
             recognition.lang = 'en-US';
             recognition.interimResults = false;
@@ -121,10 +133,15 @@
                     data.forEach((point, mainIndex) => {
                         if (point.covered) {
                             document.getElementById(`mainPoint${mainIndex}`).classList.add('crossed-off');
+                        } else {
+                            document.getElementById(`mainPoint${mainIndex}`).classList.remove('crossed-off');
                         }
                         point.subpoints.forEach((subpoint, subIndex) => {
+                            const subpointElement = document.getElementById(`mainPoint${mainIndex}_subpoint${subIndex}`);
                             if (subpoint.covered) {
-                                document.getElementById(`mainPoint${mainIndex}_subpoint${subIndex}`).classList.add('crossed-off');
+                                subpointElement.classList.add('crossed-off');
+                            } else {
+                                subpointElement.classList.remove('crossed-off');
                             }
                         });
                     });
@@ -132,87 +149,125 @@
             };
 
             recognition.onerror = (event) => {
-                console.error('Speech recognition error', event);
+                console.error('Speech recognition error:', event);
+                if (event.error === 'no-speech') {
+                    console.log('No speech detected. Please try again.');
+                }
             };
 
             recognition.onend = () => {
                 console.log('Speech recognition ended');
-                recognition.start();
+                // Restart the recognition to continue listening
+                setTimeout(() => {
+                    recognition.start();
+                }, 1000); // Adding a slight delay to avoid rapid restarts
             };
 
             recognition.start();
         }
+
+        // Initialize Speech Recognition
+        startRecognition();
     });
 </script>
+
 <style>
-    .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
+    body {
+        background-color: #f0e3ce;
+        color: black;
         font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #512da8;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     h1 {
         text-align: center;
-        color: #333;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .textarea, .main-point-input, .subpoint-input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
-        margin-bottom: 10px;
-    }
-    .btn {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #28a745;
+        margin-bottom: 20px;
         color: white;
+    }
+    .input-container {
+        display: flex;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .input-box {
+        flex: 1;
+        padding: 10px;
+        margin-right: 10px;
         border: none;
-        border-radius: 4px;
+        border-radius: 5px;
+        background-color: white;
+        color: black;
         font-size: 16px;
+    }
+    .input-box::placeholder {
+        color: #aaa;
+    }
+    .btn-add {
+        padding: 10px 20px;
+        background-color: #42a5f5;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
-        margin-bottom: 10px;
+        color: white;
     }
-    .btn-primary {
-        background-color: #007bff;
+    .btn-add:hover {
+        background-color: #1e88e5;
     }
-    .btn-secondary {
-        background-color: #6c757d;
-    }
-    .btn-success {
-        background-color: #28a745;
-    }
-    .btn:hover {
-        opacity: 0.9;
+    .list-container {
+        width: 100%;
+        text-align: center;
     }
     .bullet-points-list {
-        list-style-type: disc;
+        list-style: disc;
         padding-left: 20px;
-        border: 1px solid #ccc;
-        margin-top: 20px;
-        padding: 10px;
-        background-color: white;
-        border-radius: 4px;
+        margin: 0 auto;
+        display: inline-block;
+        text-align: left;
     }
     .bullet-point {
+        display: flex;
+        align-items: center;
+        background-color: #673ab7;
         margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        color: white;
+    }
+    .bullet-point .delete-btn {
+        margin-left: auto;
+        cursor: pointer;
+    }
+    .bullet-point .add-subpoint-btn {
+        margin-left: 10px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        color: white;
         font-size: 18px;
     }
     .subpoints-list {
-        list-style-type: circle;
+        list-style: circle;
         padding-left: 20px;
+    }
+    .subpoint {
+        background-color: #9575cd;
+        margin-top: 5px;
     }
     .crossed-off {
         text-decoration: line-through;
         color: #a9a9a9;
+    }
+    .subpoint-input {
+        margin-top: 10px;
     }
 </style>
 {% endblock %}
