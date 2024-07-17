@@ -11,6 +11,7 @@ body, html {
     /* font-family: 'opendyslexic';
     src: url('http://dyslexicfonts.com/fonts/OpenDyslexic-Regular.otf'); */
     font-family: 'Open-Dyslexic', sans-serif;
+    background-color: #f0e3ce;
 }
 
 
@@ -39,6 +40,11 @@ body, html {
     align-items: center;
 }
 
+.welcome-message {
+    font-size: xx-large;
+    align-items: center;
+}
+
 .logincontainer {
     position: absolute;
     top: 45%; 
@@ -46,14 +52,13 @@ body, html {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%); 
     margin: 20px;
-    right: 0;
+    left: 0;
     text-align: left;
     max-width: 700px;
     height: fit-content;
     padding: 16px;
     border-radius: 10px;
-    background-color: whitesmoke;
-    opacity: .85;
+    background-color: #f0e3ce;
   }
 
 .login-message {
@@ -73,3 +78,19 @@ body, html {
     display: block;
     margin-bottom: 0;
 }
+
+.bg-img {
+    /* the image used */
+    background-image: url("Neurocator Prototype.jpg");
+  
+    /* control the height of the image */
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+  
+    /* center and scale the image nicely */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
