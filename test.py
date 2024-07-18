@@ -19,10 +19,14 @@ cur = conn.cursor()
 
 # Execute a query (replace with your actual query)
 #cur.execute("SELECT password FROM users")  # Limiting to 10 rows for safety
-query = "SELECT username FROM users WHERE password=%s"
-queryVars = ("123",)
-cur.execute(query, queryVars)
-results = cur.fetchall()
-print(results)
+#query = "SELECT username FROM users WHERE password=%s"
+#queryVars = ("123",)
+#cur.execute(query, queryVars)
+#results = cur.fetchall()
 
+query = "SELECT password FROM users WHERE username=%s"
+queryVars = ("aanikat", )
+cur.execute(query, queryVars)
 conn.commit()
+results = cur.fetchall()
+print(results[0][0])

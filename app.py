@@ -21,8 +21,6 @@ db_params = {
 conn = psycopg2.connect(**db_params)
 # Create a cursor
 cur = conn.cursor()
-conn.commit()
-
 
 app = Flask(__name__)
 CORS(app)
@@ -35,40 +33,46 @@ CORS(app)
 #                      (task TEXT, completed BOOLEAN)''')
 #         conn.commit()
 
-@app.route('/', methods=['GET'])
-def index():
-    if request.method == 'GET':
-        return render_template('login.html.j2', username=session.get('aanikatangirala_username'))
+session_username_key = 'neurocator_username'
+app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
 
-    
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'GET':    
+        return render_template('login.html.j2', username=session.get(session_username_key))
+
+
+# @app.route('/signup', methods=['GET', 'POST'])
+# def signUp():
+
+  
 @app.route('/checklogin', methods=['GET', 'POST'])
 def checkLogin():
-    inputUsername = request.values.get("email")
+    inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
-    inputs = ['email', 'password']
-    validated = serverSideValidation(inputs)
-    if validated == True:
-        query = "SELECT password FROM users WHERE username=%s"
-        queryVars = (inputUsername, )
-        cur.execute(query, queryVars)
-        conn.commit()
-        results = cur.fetchall()
-        if (len(results) == 1):
-            hashedPassword = results[0]['password']
-            if check_password_hash(hashedPassword, inputPassword):
-                session['neurocator_username'] = inputUsername
-                return redirect(url_for('index'))
-
-        
-
-# general server-side validation 
-def serverSideValidation(inputs):
-    for input in inputs:
-        if (len(request.values.get(input)) == 0):
-            validated = False
+    #inputs = ['email', 'password']
+    #validated = serverSideValidation(inputs)
+    #if validated == True:
+    query = "SELECT password FROM users WHERE username=%s"
+    queryVars = (inputUsername, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    results = cur.fetchall()
+    if (len(results) == 1):
+        hashedPassword = results[0][0]
+        if (hashedPassword==inputPassword):
+            session[session_username_key] = inputUsername
+            return redirect(url_for('home'))
         else:
-            validated = True
-    return validated
+            return redirect(url_for('index', incorrectLoginError=True))
+    else:
+        return redirect(url_for('index', incorrectLoginError=True))
+    #else:
+        #return redirect(url_for('index', blankLoginError=True))
+
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html.j2')
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
@@ -154,6 +158,15 @@ def complete_task(task_id):
 @app.route('/faq')
 def faq():
     return render_template('faq.html.j2')
+
+# general server-side validation 
+def serverSideValidation(inputs):
+    for input in inputs:
+        if (len(request.values.get(input)) == 0):
+            validated = False
+        else:
+            validated = True
+    return validated
 
 if __name__ == '__main__':
     #init_db()
