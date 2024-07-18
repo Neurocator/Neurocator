@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'OpenDyslexic';
-    src: url('opendyslexic-bold.ttf') format('truetype'),
-         url('opendyslexic-regular.ttf') format('truetype');
+    src: url('open-dyslexic.ttf') format('truetype'),
+         url('open-dyslexic.ttf') format('truetype');
     /* Add more src lines if you have different font weights/styles */
     font-weight: normal; /* Adjust weight if needed */
     font-style: normal; /* Adjust style if needed */
@@ -10,8 +10,9 @@
 body, html {
     /* font-family: 'opendyslexic';
     src: url('http://dyslexicfonts.com/fonts/OpenDyslexic-Regular.otf'); */
-    font-family: 'Open-Dyslexic', sans-serif;
+    font-family: 'OpenDyslexic', sans-serif;
     background-color: #f0e3ce;
+    margin: 0px;
 }
 
 
