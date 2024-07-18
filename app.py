@@ -23,14 +23,9 @@ db_params = {
     'host': 'ep-dark-forest-a6dtlznj.us-west-2.aws.neon.tech',
     'port': '5432'  # Default PostgreSQL port, change if your setup is different
 }
-# Connect to the database
+
 conn = psycopg2.connect(**db_params)
-# Create a cursor
 cur = conn.cursor()
-
-
-# Example query (optional, remove if not needed)
-cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
 
 
 app = Flask(__name__)
@@ -53,8 +48,30 @@ def index():
         return render_template('login.html.j2', username=session.get(session_username_key))
 
 
-# @app.route('/signup', methods=['GET', 'POST'])
-# def signUp():
+@app.route('/signup', methods=['GET', 'POST'])
+def signUp():
+    if request.method == 'GET':
+        return render_template('signup.html.j2')
+    else:
+        inputEmail = request.values.get("email")
+        inputUsername = request.values.get("username")
+        userTypedPassword = request.values.get("password")
+        securedPassword = generate_password_hash(userTypedPassword)
+        query = "SELECT username FROM users WHERE username=%s"
+        queryVars = (inputUsername, )
+        cur.execute(query, queryVars)
+        conn.commit()
+        results = cur.fetchall()
+        if (len(results) == 1):
+            return redirect(url_for('signup', usernameTaken=True))
+        else:
+            query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
+            queryVars = (inputEmail, inputUsername, securedPassword)
+            cur.execute(query, queryVars)
+            conn.commit()
+            return redirect(url_for('index'))
+        
+
 
   
 @app.route('/checklogin', methods=['GET', 'POST'])
