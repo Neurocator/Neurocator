@@ -118,7 +118,7 @@
         }
 
         .signup-link {
-            color: #b0d39b;
+            color: #8fad7d;
             text-decoration: none;
             font-size: 1.1em;
             text-decoration: underline;
@@ -150,7 +150,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #2196F3;
             transition: .4s;
             border-radius: 34px;
         }
@@ -168,7 +168,7 @@
         }
 
         input:checked + .slider {
-            background-color: #2196F3;
+            background-color: #ccc;
         }
 
         input:checked + .slider:before {
@@ -213,15 +213,15 @@
     </div>
     <script>
         document.getElementById('bgToggle').addEventListener('change', function() {
-    var bgImage = document.getElementById('backgroundImage');
-    if (this.checked) {
-        bgImage.style.display = 'none'; // Hide background when checked
-        document.body.style.backgroundColor = '#f0e3ce'; // Set light cream color background
-    } else {
-        bgImage.style.display = 'block'; // Show background when unchecked
-        document.body.style.backgroundColor = ''; // Remove background color
-    }
-});
+            var bgImage = document.getElementById('backgroundImage');
+            if (this.checked) {
+                bgImage.style.display = 'none'; // Hide background when checked
+                document.body.style.backgroundColor = '#EBDEB8'; // Set light cream color background
+            } else {
+                bgImage.style.display = 'block'; // Show background when unchecked
+                document.body.style.backgroundColor = '#2196F3'; // Set blue background color
+            }
+        });
     </script>
     {% endblock %}
 </body>

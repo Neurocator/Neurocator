@@ -1,31 +1,52 @@
 import os
 import psycopg2
-from jinja2 import Environment, FileSystemLoader
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Database connection parameters
 db_params = {
-    'dbname': 'neurocator',
-    'user': 'neurocator_owner',
-    'password': '3j1HgiIuwVoO',  # In production, use environment variables for sensitive data
-    'host': 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech',
-    'port': '5432'  # Default PostgreSQL port, change if your setup is different
+    'dbname': os.environ.get('PGDATABASE', 'neurocator'),
+    'user': os.environ.get('PGUSER', 'neurocator_owner'),
+    'password': os.environ.get('PGPASSWORD', '3j1HgiIuwVoO'),
+    'host': os.environ.get('PGHOST', 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech'),
+    'port': os.environ.get('PGPORT', '5432'),
+    'sslmode': 'require'
 }
 
-print("hello")
+def insert_data():
+    conn = None
+    cur = None
+    try:
+        logging.info("Connecting to the database...")
+        conn = psycopg2.connect(**db_params)
+        cur = conn.cursor()
 
-# Connect to the database
-conn = psycopg2.connect(**db_params)
+        logging.info("Connected successfully")
 
-# Create a cursor
-cur = conn.cursor()
+        # Example INSERT query
+        query = "INSERT INTO test (name) VALUES (%s)"
+        data = ('test',)
 
-# Execute a query (replace with your actual query)
-#cur.execute("SELECT password FROM users")  # Limiting to 10 rows for safety
-#query = "SELECT username FROM users WHERE password=%s"
-#queryVars = ("123",)
-#cur.execute(query, queryVars)
-#results = cur.fetchall()
+        logging.info("Executing INSERT query...")
+        cur.execute(query, data)
 
-query = "INSERT INTO test (name) VALUES (test)"
-cur.execute(query)
-conn.commit()
+        conn.commit()
+        logging.info("Data inserted successfully")
+
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+        logging.info("Database connection closed")
+
+if __name__ == "__main__":
+    insert_data()

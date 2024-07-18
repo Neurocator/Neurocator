@@ -1,12 +1,23 @@
+import os
+import psycopg2
+import logging
+import sqlite3
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlite3
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-import os
-import psycopg2
-from jinja2 import Environment, FileSystemLoader
+# Database connection parameters
+db_params = {
+    'dbname': os.getenv('PGDATABASE', 'neurocator'),
+    'user': os.getenv('PGUSER', 'neurocator_owner'),
+    'password': os.getenv('PGPASSWORD', '3j1HgiIuwVoO'),
+    'host': os.getenv('PGHOST', 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech'),
+    'port': os.getenv('PGPORT', '5432'),
+    'sslmode': 'require'
+}
 
 # Utility functions
 def is_point_covered(transcript_tokens, point_text):
@@ -15,23 +26,41 @@ def is_point_covered(transcript_tokens, point_text):
 def process_transcript(transcript):
     return transcript.split()
 
-print("hello")
+def connect_db():
+    try:
+        logging.info("Connecting to the database...")
+        conn = psycopg2.connect(**db_params)
+        logging.info("Connected successfully")
+        return conn
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e}")
+        return None
 
-# Database connection parameters
-db_params = {
-    'dbname': 'neurocator',
-    'user': 'neurocator_owner',
-    'password': '3j1HgiIuwVoO',  # In production, use environment variables for sensitive data
-    'host': 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech',
-    'port': '5432',  # Default PostgreSQL port, change if your setup is different
-    'endpoint_id': 'ep-autumn-scene-a6huvqfz'
-}
+def insert_data(name):
+    conn = None
+    cur = None
+    try:
+        conn = connect_db()
+        if conn:
+            cur = conn.cursor()
+            query = "INSERT INTO test (name) VALUES (%s)"
+            cur.execute(query, (name,))
+            conn.commit()
+            logging.info("Data inserted successfully")
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e}")
+        if conn:
+            conn.rollback()
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+        logging.info("Database connection closed")
 
-conn = psycopg2.connect(**db_params)
-cur = conn.cursor()
-
-print("hello2")
-
+# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
@@ -43,7 +72,6 @@ def index():
     if request.method == 'GET':    
         return render_template('login.html.j2', username=session.get(session_username_key))
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signUp():
     if request.method == 'GET':
@@ -53,44 +81,49 @@ def signUp():
         inputUsername = request.values.get("username")
         userTypedPassword = request.values.get("password")
         securedPassword = generate_password_hash(userTypedPassword)
-        query = "SELECT username FROM users WHERE username=%s"
-        queryVars = (inputUsername, )
-        cur.execute(query, queryVars)
-        conn.commit()
-        results = cur.fetchall()
-        if (len(results) == 1):
-            return redirect(url_for('signup', usernameTaken=True))
+        conn = connect_db()
+        if conn:
+            cur = conn.cursor()
+            query = "SELECT username FROM users WHERE username=%s"
+            cur.execute(query, (inputUsername,))
+            results = cur.fetchall()
+            if len(results) == 1:
+                cur.close()
+                conn.close()
+                return redirect(url_for('signUp', usernameTaken=True))
+            else:
+                query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
+                cur.execute(query, (inputEmail, inputUsername, securedPassword))
+                conn.commit()
+                cur.close()
+                conn.close()
+                return redirect(url_for('index'))
         else:
-            query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
-            queryVars = (inputEmail, inputUsername, securedPassword)
-            cur.execute(query, queryVars)
-            conn.commit()
-            return redirect(url_for('index'))
-        
-  
-@app.route('/checklogin', methods=['GET', 'POST'])
+            return redirect(url_for('signUp', dbError=True))
+
+@app.route('/checklogin', methods=['POST'])
 def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
-    #inputs = ['email', 'password']
-    #validated = serverSideValidation(inputs)
-    #if validated == True:
-    query = "SELECT password FROM users WHERE username=%s"
-    queryVars = (inputUsername, )
-    cur.execute(query, queryVars)
-    conn.commit()
-    results = cur.fetchall()
-    if (len(results) == 1):
-        hashedPassword = results[0][0]
-        if (hashedPassword==inputPassword):
-            session[session_username_key] = inputUsername
-            return redirect(url_for('home'))
+    conn = connect_db()
+    if conn:
+        cur = conn.cursor()
+        query = "SELECT password FROM users WHERE username=%s"
+        cur.execute(query, (inputUsername,))
+        results = cur.fetchall()
+        cur.close()
+        conn.close()
+        if len(results) == 1:
+            hashedPassword = results[0][0]
+            if check_password_hash(hashedPassword, inputPassword):
+                session[session_username_key] = inputUsername
+                return redirect(url_for('home'))
+            else:
+                return redirect(url_for('index', incorrectLoginError=True))
         else:
             return redirect(url_for('index', incorrectLoginError=True))
     else:
-        return redirect(url_for('index', incorrectLoginError=True))
-    #else:
-        #return redirect(url_for('index', blankLoginError=True))
+        return redirect(url_for('index', dbError=True))
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
@@ -98,43 +131,39 @@ def home():
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
+    conn = connect_db()
+    if conn:
+        cur = conn.cursor()
         query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
-        cur.execute(query, )
-        conn.commit()
+        cur.execute(query)
         posts = cur.fetchall()
+        cur.close()
+        conn.close()
         return render_template('forum.html.j2', posts=posts)
+    else:
+        return render_template('forum.html.j2', dbError=True)
 
 @app.route('/addpost', methods=['GET', 'POST'])
 def addPost():
-    if session.get(session_username_key) == None:
+    if session.get(session_username_key) is None:
         return redirect(url_for('index'))
     if request.method == 'GET':
-        username = session.get(session_username_key)
-        return render_template('addpost.html.j2', username)
+        return render_template('addpost.html.j2', username=session.get(session_username_key))
     else:
         username = session.get(session_username_key)
         inputTitle = request.values.get("title")
         inputContent = request.values.get("content")
-        query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-        queryVars = (username, inputTitle, inputContent)
-        cur.execute(query, queryVars)
-        conn.commit()
-        query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
-        queryVars = (inputContent, )
-        cur.execute(query, queryVars)
-        conn.commit()
-    
-
-def newevent():
-    if session.get('aanikatangirala_username') == None:
-        return redirect(url_for('index'))
-    if request.method == 'GET':
-        return render_template('newevent.html.j2')
-    else:
-        inputEventName = request.values.get("eventName")
-        inputDate = request.values.get("eventDate")
-        inputTime = request.values.get("time")
-        inputAddress = request.values.get("address")
+        conn = connect_db()
+        if conn:
+            cur = conn.cursor()
+            query = "INSERT INTO forum_posts (username, title, content, date) VALUES (%s, %s, %s, NOW())"
+            cur.execute(query, (username, inputTitle, inputContent))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return redirect(url_for('forum'))
+        else:
+            return render_template('addpost.html.j2', dbError=True)
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
@@ -184,7 +213,6 @@ def resources():
 def about():
     return render_template('about_us.html.j2')
 
-# To-Do List routes
 @app.route('/todo', methods=['GET', 'POST'])
 def to_do_list():
     if request.method == 'POST':
