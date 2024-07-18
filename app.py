@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, jsonify, redirect, url_for
 from flask_cors import CORS
-from utils import is_point_covered, process_transcript
+#from utils import is_point_covered, process_transcript
 import sqlite3
 
 # import mysql.connector
@@ -33,7 +33,9 @@ conn = psycopg2.connect(**db_params)
 cur = conn.cursor()
 
 # Execute a query (replace with your actual query)
-cur.execute("INSERT INTO neurocator (name) VALUES (hi)")  # Limiting to 10 rows for safety
+cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
+
+conn.commit()
 
 app = Flask(__name__)
 CORS(app)

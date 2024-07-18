@@ -18,24 +18,6 @@ conn = psycopg2.connect(**db_params)
 cur = conn.cursor()
 
 # Execute a query (replace with your actual query)
-cur.execute("SELECT * FROM neurocator LIMIT 10")  # Limiting to 10 rows for safety
+cur.execute("INSERT INTO neurocator (name) VALUES ('hi')")  # Limiting to 10 rows for safety
 
-# Fetch the results
-results = cur.fetchall()
-
-# Close the cursor and connection
-cur.close()
-conn.close()
-
-# Set up Jinja2 environment
-env = Environment(loader=FileSystemLoader('templates'))
-template = env.get_template('results_template.html')
-
-# Render the template with the results
-output = template.render(results=results)
-
-# Write the output to a file
-with open('output.html', 'w') as f:
-    f.write(output)
-
-print("Results have been rendered to output.html")
+conn.commit()
