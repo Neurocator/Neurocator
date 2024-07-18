@@ -24,7 +24,6 @@ db_params = {
     'password': '3j1HgiIuwVoO',  # In production, use environment variables for sensitive data
     'host': 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech',
     'port': '5432',  # Default PostgreSQL port, change if your setup is different
-    'endpoint_id': 'ep-autumn-scene-a6huvqfz'
 }
 
 conn = psycopg2.connect(**db_params)
@@ -96,45 +95,34 @@ def checkLogin():
 def home():
     return render_template('home.html.j2')
 
-@app.route('/forum', methods=['GET', 'POST'])
-def forum():
-        query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
-        cur.execute(query, )
-        conn.commit()
-        posts = cur.fetchall()
-        return render_template('forum.html.j2', posts=posts)
+# @app.route('/forum', methods=['GET', 'POST'])
+# def forum():
+#         query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
+#         cur.execute(query, )
+#         conn.commit()
+#         posts = cur.fetchall()
+#         return render_template('forum.html.j2', posts=posts)
 
-@app.route('/addpost', methods=['GET', 'POST'])
-def addPost():
-    if session.get(session_username_key) == None:
-        return redirect(url_for('index'))
-    if request.method == 'GET':
-        username = session.get(session_username_key)
-        return render_template('addpost.html.j2', username)
-    else:
-        username = session.get(session_username_key)
-        inputTitle = request.values.get("title")
-        inputContent = request.values.get("content")
-        query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-        queryVars = (username, inputTitle, inputContent)
-        cur.execute(query, queryVars)
-        conn.commit()
-        query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
-        queryVars = (inputContent, )
-        cur.execute(query, queryVars)
-        conn.commit()
+# @app.route('/addpost', methods=['GET', 'POST'])
+# def addPost():
+#     if session.get(session_username_key) == None:
+#         return redirect(url_for('index'))
+#     if request.method == 'GET':
+#         username = session.get(session_username_key)
+#         return render_template('addpost.html.j2', username)
+#     else:
+#         username = session.get(session_username_key)
+#         inputTitle = request.values.get("title")
+#         inputContent = request.values.get("content")
+#         query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
+#         queryVars = (username, inputTitle, inputContent)
+#         cur.execute(query, queryVars)
+#         conn.commit()
+#         query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
+#         queryVars = (inputContent, )
+#         cur.execute(query, queryVars)
+#         conn.commit()
     
-
-def newevent():
-    if session.get('aanikatangirala_username') == None:
-        return redirect(url_for('index'))
-    if request.method == 'GET':
-        return render_template('newevent.html.j2')
-    else:
-        inputEventName = request.values.get("eventName")
-        inputDate = request.values.get("eventDate")
-        inputTime = request.values.get("time")
-        inputAddress = request.values.get("address")
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
