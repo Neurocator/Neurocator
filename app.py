@@ -23,53 +23,84 @@ db_params = {
     'host': 'ep-dark-forest-a6dtlznj.us-west-2.aws.neon.tech',
     'port': '5432'  # Default PostgreSQL port, change if your setup is different
 }
-# Connect to the database
-conn = psycopg2.connect(**db_params)
-# Create a cursor
-cur = conn.cursor()
 
-# Example query (optional, remove if not needed)
-cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
-conn.commit()
+conn = psycopg2.connect(**db_params)
+cur = conn.cursor()
 
 
 app = Flask(__name__)
 CORS(app)
 
+session_username_key = 'neurocator_username'
+app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
+
+# # Initialize the SQLite database for the to-do list
+# def init_db():
+#     with sqlite3.connect('database.db') as conn:
+#         c = conn.cursor()
+#         c.execute('''CREATE TABLE IF NOT EXISTS tasks
+#                      (task TEXT, completed BOOLEAN)''')
+#         conn.commit()
+
 @app.route('/', methods=['GET'])
 def index():
-    if request.method == 'GET':
-        return render_template('login.html.j2', username=session.get('aanikatangirala_username'))
+    if request.method == 'GET':    
+        return render_template('login.html.j2', username=session.get(session_username_key))
 
-    
-@app.route('/checklogin', methods=['GET', 'POST'])
-def checkLogin():
-    inputUsername = request.values.get("email")
-    inputPassword = request.values.get("password")
-    inputs = ['email', 'password']
-    validated = serverSideValidation(inputs)
-    if validated == True:
-        query = "SELECT password FROM users WHERE username=%s"
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signUp():
+    if request.method == 'GET':
+        return render_template('signup.html.j2')
+    else:
+        inputEmail = request.values.get("email")
+        inputUsername = request.values.get("username")
+        userTypedPassword = request.values.get("password")
+        securedPassword = generate_password_hash(userTypedPassword)
+        query = "SELECT username FROM users WHERE username=%s"
         queryVars = (inputUsername, )
         cur.execute(query, queryVars)
         conn.commit()
         results = cur.fetchall()
         if (len(results) == 1):
-            hashedPassword = results[0]['password']
-            if check_password_hash(hashedPassword, inputPassword):
-                session['neurocator_username'] = inputUsername
-                return redirect(url_for('index'))
-
+            return redirect(url_for('signup', usernameTaken=True))
+        else:
+            query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
+            queryVars = (inputEmail, inputUsername, securedPassword)
+            cur.execute(query, queryVars)
+            conn.commit()
+            return redirect(url_for('index'))
         
 
-# general server-side validation 
-def serverSideValidation(inputs):
-    for input in inputs:
-        if (len(request.values.get(input)) == 0):
-            validated = False
+
+  
+@app.route('/checklogin', methods=['GET', 'POST'])
+def checkLogin():
+    inputUsername = request.values.get("username")
+    inputPassword = request.values.get("password")
+    #inputs = ['email', 'password']
+    #validated = serverSideValidation(inputs)
+    #if validated == True:
+    query = "SELECT password FROM users WHERE username=%s"
+    queryVars = (inputUsername, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    results = cur.fetchall()
+    if (len(results) == 1):
+        hashedPassword = results[0][0]
+        if (hashedPassword==inputPassword):
+            session[session_username_key] = inputUsername
+            return redirect(url_for('home'))
         else:
-            validated = True
-    return validated
+            return redirect(url_for('index', incorrectLoginError=True))
+    else:
+        return redirect(url_for('index', incorrectLoginError=True))
+    #else:
+        #return redirect(url_for('index', blankLoginError=True))
+
+@app.route('/home', methods=['GET', 'POST'])
+def home():
+    return render_template('index.html.j2')
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
@@ -162,6 +193,15 @@ def faq():
 def download(filename):
     directory = os.path.join(app.root_path, 'static/files/article')
     return send_from_directory(directory, filename)
+
+# general server-side validation 
+def serverSideValidation(inputs):
+    for input in inputs:
+        if (len(request.values.get(input)) == 0):
+            validated = False
+        else:
+            validated = True
+    return validated
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, debug=True)

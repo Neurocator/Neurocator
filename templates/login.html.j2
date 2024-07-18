@@ -118,9 +118,10 @@
         }
 
         .signup-link {
-            color: #d8a7c5;
+            color: #b0d39b;
             text-decoration: none;
             font-size: 1.1em;
+            text-decoration: underline;
         }
 
         .signup-link:hover {
@@ -187,7 +188,7 @@
     <div class="content">
         <h1 class="welcome-message">Welcome to <span class="highlight">Neurocator</span><span>!</span></h1>
         <div class="form-container">
-            <form method="POST" class="login-form">
+            <form method="POST" action="checklogin" class="login-form">
                 <label class="form-label"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" class="form-input" required>
                 <label class="form-label"><b>Password</b></label>
