@@ -18,6 +18,11 @@ conn = psycopg2.connect(**db_params)
 cur = conn.cursor()
 
 # Execute a query (replace with your actual query)
-cur.execute("INSERT INTO neurocator (name) VALUES ('hi')")  # Limiting to 10 rows for safety
+#cur.execute("SELECT password FROM users")  # Limiting to 10 rows for safety
+query = "SELECT username FROM users WHERE password=%s"
+queryVars = ("123",)
+cur.execute(query, queryVars)
+results = cur.fetchall()
+print(results)
 
 conn.commit()
