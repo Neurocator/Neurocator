@@ -94,8 +94,19 @@ def home():
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
-    return render_template('forum.html.j2')
+        query = "SELECT id, user, title, content FROM forum_posts ORDER BY date DESC"
+        cur.execute(query, )
+        conn.commit()
+        posts = cur.fetchall()
+        return render_template('forum.html.j2', posts=posts)
 
+@app.route('/newpost', methods=['GET', 'POST'])
+def newPost():
+    if session.get(session_username_key) == None:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        username = session.get('aanikatangirala_username')
+        return render_template('newpost.html.j2', username)
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():

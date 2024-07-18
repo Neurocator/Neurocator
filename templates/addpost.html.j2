@@ -1,0 +1,27 @@
+{% extends "base.html.j2" %}
+
+{% block body %}
+<!DOCTYPE html>
+
+    <h2>Want to add a new post? Fill out the form below!</h2>
+    <div class="events noresize">
+    <form method = "POST" action="newpost">
+        <div class="left">
+            <label class="question red">Name of Event:</label>
+            <input type="text" name="eventName" placeholder="Enter Event Name" class="answer" required>
+            <label class="question red">Date:</label>
+            <input type="date" name="eventDate" class="answer" required>
+            <label class="question red">Time:</label>
+            <input type="time" name="time" class="answer" required>
+            <label class="question red">Address:</label>
+            <input type="text" name="address" class="answer" placeholder="Enter Address" required>
+            <button type="submit" class="btn yellow bold">Submit!</button>
+        </div>
+            
+        <div class="right">
+            <img class="img1" alt="lakeside-logo" src="static/lakesidelogo.png">
+        </div>
+    </form> 
+    </div>
+
+{% endblock %}

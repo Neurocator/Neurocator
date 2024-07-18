@@ -3,6 +3,22 @@
 {% block body %}
 <!DOCTYPE html>
 
+<h1>Welcome to the forum! Post and connect with other neurodiverse teachers!</h1>
 
+<div class="posts">
+<h2>Recent Posts!</h2>
+{% if posts|length %}
+{% for post in posts %}
+    <div class="individual-post">
+        <td>Started by @{{post.name}}</td>
+        <td> on {{post.date}}</td>
+        <td>{{post.title}}</td>
+        <td>{{post.content}}</td>
+    </div>
+{% endfor %}
+{% else %}
+<p>There are no posts yet! Add the first one here: <a href="/addpost">Add a New Post</a></p>
+{% endif %}
+</div>
 
 {% endblock %}
