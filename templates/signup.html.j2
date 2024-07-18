@@ -13,6 +13,7 @@
             margin: 0px;
             height: 100%;
             overflow: hidden;
+            background-color: #FFF6EA;
         }
 
         .bg-img {
@@ -60,7 +61,7 @@
             align-items: center;
         }
 
-        .login-form {
+        .signup-form {
             width: 100%;
         }
 
@@ -183,7 +184,6 @@
     </style>
 </head>
 <body>
-    {% block body %}
     <div class="bg-img" id="backgroundImage"></div>
     <div class="content">
         <h1 class="welcome-message">Welcome to <span class="highlight">Neurocator</span><span>!</span></h1>
@@ -213,16 +213,15 @@
     </div>
     <script>
         document.getElementById('bgToggle').addEventListener('change', function() {
-    var bgImage = document.getElementById('backgroundImage');
-    if (this.checked) {
-        bgImage.style.display = 'none'; // Hide background when checked
-        document.body.style.backgroundColor = '#f0e3ce'; // Set light cream color background
-    } else {
-        bgImage.style.display = 'block'; // Show background when unchecked
-        document.body.style.backgroundColor = ''; // Remove background color
-    }
-});
+            var bgImage = document.getElementById('backgroundImage');
+            if (this.checked) {
+                bgImage.style.display = 'none'; // Hide background when checked
+                document.body.style.backgroundColor = '#f0e3ce'; // Set light cream color background
+            } else {
+                bgImage.style.display = 'block'; // Show background when unchecked
+                document.body.style.backgroundColor = ''; // Remove background color
+            }
+        });
     </script>
-    {% endblock %}
 </body>
 </html>

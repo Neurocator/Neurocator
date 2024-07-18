@@ -20,7 +20,7 @@
         const addMainPointBtn = document.getElementById('addMainPointBtn');
         const bulletPointsList = document.getElementById('bulletPoints');
         
-        let points = [];
+        let points = JSON.parse(localStorage.getItem('points')) || [];
 
         addMainPointBtn.addEventListener('click', () => {
             const mainPointText = mainPointInput.value.trim();
@@ -28,7 +28,7 @@
             if (mainPointText) {
                 const mainPoint = { text: mainPointText, subpoints: [], covered: false };
                 points.push(mainPoint);
-                renderPoints();
+                saveAndRenderPoints();
             }
 
             mainPointInput.value = '';
@@ -39,6 +39,11 @@
                 addMainPointBtn.click();
             }
         });
+
+        function saveAndRenderPoints() {
+            localStorage.setItem('points', JSON.stringify(points));
+            renderPoints();
+        }
 
         function renderPoints() {
             bulletPointsList.innerHTML = '';
@@ -53,6 +58,9 @@
                     <span class="delete-btn" data-index="${mainIndex}">🗑️</span>
                     <input type="text" class="input-box subpoint-input" placeholder="Enter subpoint" data-index="${mainIndex}" style="display:none;">
                 `;
+                if (mainPoint.covered) {
+                    mainPointItem.classList.add('crossed-off');
+                }
                 bulletPointsList.appendChild(mainPointItem);
 
                 if (mainPoint.subpoints.length > 0) {
@@ -67,6 +75,9 @@
                             <span class="subpoint-text">${subpoint.text}</span>
                             <span class="delete-btn" data-main-index="${mainIndex}" data-sub-index="${subIndex}">🗑️</span>
                         `;
+                        if (subpoint.covered) {
+                            subpointItem.classList.add('crossed-off');
+                        }
                         subpointsList.appendChild(subpointItem);
                     });
                     bulletPointsList.appendChild(subpointsList);
@@ -89,7 +100,7 @@
                         const subpointText = input.value.trim();
                         if (subpointText) {
                             points[mainIndex].subpoints.push({ text: subpointText, covered: false });
-                            renderPoints();
+                            saveAndRenderPoints();
                         }
                         input.value = '';
                         input.style.display = 'none';
@@ -108,7 +119,7 @@
                         points[mainIndex].subpoints.splice(subIndex, 1);
                     }
 
-                    renderPoints();
+                    saveAndRenderPoints();
                 });
             });
         }
@@ -143,19 +154,24 @@
                 .then(data => {
                     data.forEach((point, mainIndex) => {
                         if (point.covered) {
+                            points[mainIndex].covered = true;
                             document.getElementById(`mainPoint${mainIndex}`).classList.add('crossed-off');
                         } else {
+                            points[mainIndex].covered = false;
                             document.getElementById(`mainPoint${mainIndex}`).classList.remove('crossed-off');
                         }
                         point.subpoints.forEach((subpoint, subIndex) => {
                             const subpointElement = document.getElementById(`mainPoint${mainIndex}_subpoint${subIndex}`);
                             if (subpoint.covered) {
+                                points[mainIndex].subpoints[subIndex].covered = true;
                                 subpointElement.classList.add('crossed-off');
                             } else {
+                                points[mainIndex].subpoints[subIndex].covered = false;
                                 subpointElement.classList.remove('crossed-off');
                             }
                         });
                     });
+                    saveAndRenderPoints();
                 });
             };
 
@@ -179,6 +195,7 @@
 
         // Initialize Speech Recognition
         startRecognition();
+        renderPoints();
     });
 </script>
 
@@ -247,7 +264,7 @@
         display: inline-block;
         text-align: left;
     }
-    .bullet-point {
+        .bullet-point {
         display: flex;
         align-items: center;
         background-color: #673ab7;
