@@ -1,30 +1,153 @@
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neurocator!</title>
     <link rel="stylesheet" type="text/css" href="static/style.css"/>
+    <style>
+        body, html {
+            font-family: 'OpenDyslexic', sans-serif;
+            background-color: #f0e3ce;
+            margin: 0px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .bg-img {
+            background-image: url("static/Neurocator Prototype.jpg"); /* Ensure the path is correct */
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .welcome-message {
+            font-size: xx-large;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .yellow {
+            color: #ffdd00;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .form-input {
+            width: calc(100% - 20px);
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.2em;
+        }
+
+        .remember-me-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .remember-me-checkbox {
+            margin-right: 10px;
+        }
+
+        .remember-me-label {
+            font-size: 1em;
+            color: #333;
+        }
+
+        .login-button {
+            background-color: #d8a7c5;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .login-button:hover {
+            background-color: #c28ab4;
+        }
+
+        .signup-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .signup-link {
+            color: #d8a7c5;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-
-
-{% block body %}
-
-<div class="bg-img">
-
-    <h1 class="welcome-message">Welcome to <span class="yellow">Neurocator</span><span>!</span></h1>
-
-    <div>
-    <form method = "POST" class="logincontainer">
-        <p class="login-message">Already a user? Please login below!</p>
-        <label class="question"><b>Username:</b></label>
-        <input placeholder="Enter Username" name="username" class="answer" required>
-        <label class="question"><b>Password:</b></label>
-        <input type="password" placeholder="Enter Password" name="password" class="answer" required>
-        <button type="submit">Log In!</button>
-        <br>
-        <a href="signup">Don't have an account? Signup here!</a>
-    </form>
+<body>
+    {% block body %}
+    <div class="bg-img" style="background-image: url('static/Neurocator Prototype.jpg');"></div>
+    <div class="content">
+        <h1 class="welcome-message">Welcome to <span class="yellow">Neurocator</span><span>!</span></h1>
+        <div class="form-container">
+            <form method="POST" class="login-form">
+                <label class="form-label"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" class="form-input" required>
+                <label class="form-label"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" class="form-input" required>
+                <div class="remember-me-container">
+                    <input type="checkbox" name="remember" class="remember-me-checkbox">
+                    <label class="remember-me-label">Remember me</label>
+                </div>
+                <button type="submit" class="login-button">Log In</button>
+                <div class="signup-container">
+                    <p>Don't have an account? <a href="signup" class="signup-link">Sign up!</a></p>
+                </div>
+            </form>
+        </div>
     </div>
-
-</div>
-
-
-{% endblock %}
+    {% endblock %}
+</body>
+</html>
