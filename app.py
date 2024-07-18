@@ -100,13 +100,13 @@ def checkLogin():
 def home():
     return render_template('home.html.j2')
 
-# @app.route('/forum', methods=['GET', 'POST'])
-# def forum():
-#         query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
-#         cur.execute(query, )
-#         conn.commit()
-#         posts = cur.fetchall()
-#         return render_template('forum.html.j2', posts=posts)
+@app.route('/forum', methods=['GET', 'POST'])
+def forum():
+        query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
+        cur.execute(query, )
+        conn.commit()
+        posts = cur.fetchall()
+        return render_template('forum.html.j2', posts=posts)
 
 # @app.route('/addpost', methods=['GET', 'POST'])
 # def addPost():
