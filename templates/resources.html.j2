@@ -30,8 +30,7 @@
   <div class="bg-brand-primary">
     <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
-        <h1
-          class="max-w-lg mb-6 font-sans text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+        <h1 class="max-w-lg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
           Resources
         </h1>
         <p class="text-base text-gray-700 md:text-lg">
@@ -46,58 +45,55 @@
   <div class="bg-page py-8">
     <div class="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
       <div class="flex flex-wrap justify-center mb-10">
-        <button data-group="All" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">All</button>
-        <button data-group="Articles" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Articles</button>
-        <button data-group="Infographics" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Infographics</button>
+        <button data-group="All"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">All</button>
+        <button data-group="Mental Health"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Mental Health</button>
+        <button data-group="Autism"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Autism</button>
+        <button data-group="ADHD"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">ADHD</button>
+        <button data-group="Dyslexia"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Dyslexia</button>
+        <button data-group="Self-Advocacy"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Self-Advocacy</button>
+        <button data-group="Organization"
+          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Organization</button>
       </div>
-      <!-- PDF Resource --->
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="resource-item" data-group="Articles">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Understanding ADHD</h2>
-            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-            <a href="/download/understanding-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-          </div>
-        </div>
 
-        <!--- Infographic Resource --->
-        <div class="resource-item" data-group="Infographics">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">ADHD Statistics</h2>
-            <p class="mb-4">Download our infographic to see the latest statistics on ADHD.</p>
-            <a href="/download/adhd-statistics.png" class="text-brand-primary hover:underline">Download Infographic</a>
-          </div>
-        </div>
-        <!-- Add more resources here as needed -->
-        <div class="resource-item" data-group="Articles">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Living with ADHD</h2>
-            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-            <a href="/download/living-with-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-          </div>
-        </div>
-      </div>
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3" id="resource-container"></div>
     </div>
   </div>
 </div>
 
+<script type="text/javascript" src="../static/resource.js"></script>
+
 <style>
+  h1.textstyle {
+    font-family: 'OpenDyslexic', sans-serif;
+  }
+
   body {
     font-family: 'OpenDyslexic', sans-serif;
     background-color: #f0e3ce;
   }
+
   .bg-brand-primary {
     background-color: #B0D39B;
   }
+
   .text-brand-primary {
     color: #B0D39B;
   }
+
   .group-button.active {
     border: 2px solid #B0D39B;
   }
+
   .resource-card:hover {
     background-color: #eeeae2;
   }
+
   .border-2.border-black {
     border: 2px solid black;
   }
