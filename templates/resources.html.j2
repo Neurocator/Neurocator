@@ -12,9 +12,9 @@
       var group = $(this).data('group');
       console.log(group);
       // Add border classes to elements with matching group
-      $('.group-button[data-group="' + group + '"]').addClass("border-2 border-brand-tertiary");
+      $('.group-button[data-group="' + group + '"]').addClass("border-2 border-black");
       // Remove border classes from other elements
-      $('.group-button:not([data-group="' + group + '"])').removeClass("border-2 border-brand-tertiary");
+      $('.group-button:not([data-group="' + group + '"])').removeClass("border-2 border-black");
 
       if (group === 'All') {
         $('.resource-item').show();
@@ -26,18 +26,14 @@
   });
 </script>
 <div class="mb-16">
-
-  <div class="bg-brand-primary">
+  <div class="bg-brand-primary rounded-lg"> <!-- Added rounded-lg class here -->
     <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
-        <h1
-          class="max-w-lg mb-6 font-sans text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+        <h1 class="max-w-lg mb-6 font-sans text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
           Resources
         </h1>
         <p class="text-base text-gray-700 md:text-lg">
-          Attention-deficit/hyperactivity disorder (ADHD) is a neurodevelopmental disorder affecting 11 percent of
-          school-age children. Symptoms continue into adulthood in more than three-quarters of cases.
-          ADHD is characterized by developmentally inappropriate levels of inattention, impulsivity, and hyperactivity.
+          BLAHBLAH
         </p>
       </div>
     </div>
@@ -84,7 +80,7 @@
 <style>
   body {
     font-family: 'OpenDyslexic', sans-serif;
-    background-color: #FFF6EA;
+    background-color: #f0e3ce;
   }
   .bg-brand-primary {
     background-color: #B0D39B;
@@ -97,6 +93,9 @@
   }
   .resource-card:hover {
     background-color: #eeeae2;
+  }
+  .border-2.border-black {
+    border: 2px solid black;
   }
 </style>
 

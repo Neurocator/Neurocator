@@ -34,14 +34,6 @@ CORS(app)
 session_username_key = 'neurocator_username'
 app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
 
-# # Initialize the SQLite database for the to-do list
-# def init_db():
-#     with sqlite3.connect('database.db') as conn:
-#         c = conn.cursor()
-#         c.execute('''CREATE TABLE IF NOT EXISTS tasks
-#                      (task TEXT, completed BOOLEAN)''')
-#         conn.commit()
-
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':    
