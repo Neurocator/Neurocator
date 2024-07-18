@@ -28,13 +28,16 @@ conn = psycopg2.connect(**db_params)
 # Create a cursor
 cur = conn.cursor()
 
+
 # Example query (optional, remove if not needed)
 cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
-conn.commit()
 
 
 app = Flask(__name__)
 CORS(app)
+
+session_username_key = 'neurocator_username'
+app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
 
 # # Initialize the SQLite database for the to-do list
 # def init_db():
