@@ -6,10 +6,12 @@ from jinja2 import Environment, FileSystemLoader
 db_params = {
     'dbname': 'neurocator',
     'user': 'neurocator_owner',
-    'password': 'cLDe5qNvzUO1',  # In production, use environment variables for sensitive data
-    'host': 'ep-dark-forest-a6dtlznj.us-west-2.aws.neon.tech',
+    'password': '3j1HgiIuwVoO',  # In production, use environment variables for sensitive data
+    'host': 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech',
     'port': '5432'  # Default PostgreSQL port, change if your setup is different
 }
+
+print("hello")
 
 # Connect to the database
 conn = psycopg2.connect(**db_params)
@@ -24,9 +26,6 @@ cur = conn.cursor()
 #cur.execute(query, queryVars)
 #results = cur.fetchall()
 
-query = "SELECT password FROM users WHERE username=%s"
-queryVars = ("aanikat", )
-cur.execute(query, queryVars)
+query = "INSERT INTO test (name) VALUES (test)"
+cur.execute(query)
 conn.commit()
-results = cur.fetchall()
-print(results[0][0])

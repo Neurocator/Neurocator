@@ -1,0 +1,20 @@
+{% extends "base.html.j2" %}
+
+{% block body %}
+<!DOCTYPE html>
+
+    <h2>Want to add a new post? Fill out the form below!</h2>
+    <div class="events noresize">
+    <form method = "POST" action="newpost">
+        <div class="left">
+            <label>Title</label>
+            <input type="text" name="title" placeholder="Enter your Post Title" class="answer" required>
+            <label>Content</label>
+            <input type="text" name="content" class="answer" required>
+            <button type="submit">Submit!</button>
+        </div>
+        
+    </form> 
+    </div>
+
+{% endblock %}
