@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neurocator!</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+    <!-- Include OpenDyslexic Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=OpenDyslexic" type="text/css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}"/>
     <style>
         body, html {
             font-family: 'OpenDyslexic', sans-serif;
-            background-color: #f0e3ce;
             margin: 0px;
             height: 100%;
             overflow: hidden;
         }
 
         .bg-img {
-            background-image: url("static/Neurocator Prototype.jpg"); /* Ensure the path is correct */
+            background-image: url("{{ url_for('static', filename='Neurocator Prototype.jpg') }}"); /* Ensure the path is correct */
             height: 100%;
             width: 100%;
             background-size: cover;
@@ -25,6 +26,7 @@
             top: 0;
             left: 0;
             z-index: -1;
+            display: block; /* Initially visible */
         }
 
         .content {
@@ -42,8 +44,8 @@
             margin-bottom: 20px;
         }
 
-        .yellow {
-            color: #ffdd00;
+        .highlight {
+            color: #333; /* Changed to a neutral color */
         }
 
         .form-container {
@@ -124,13 +126,66 @@
         .signup-link:hover {
             text-decoration: underline;
         }
+
+        /* Slider switch CSS */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-top: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            margin-top: 10px;
+            font-size: 1em;
+            color: #333;
+        }
     </style>
 </head>
 <body>
     {% block body %}
-    <div class="bg-img" style="background-image: url('static/Neurocator Prototype.jpg');"></div>
+    <div class="bg-img" id="backgroundImage"></div>
     <div class="content">
-        <h1 class="welcome-message">Welcome to <span class="yellow">Neurocator</span><span>!</span></h1>
+        <h1 class="welcome-message">Welcome to <span class="highlight">Neurocator</span><span>!</span></h1>
         <div class="form-container">
             <form method="POST" class="login-form">
                 <label class="form-label"><b>Username</b></label>
@@ -147,7 +202,26 @@
                 </div>
             </form>
         </div>
+        <div class="toggle-container">
+            <label class="switch">
+                <input type="checkbox" id="bgToggle">
+                <span class="slider"></span>
+            </label>
+            <div class="toggle-label">Purple swirls on/off</div>
+        </div>
     </div>
+    <script>
+        document.getElementById('bgToggle').addEventListener('change', function() {
+    var bgImage = document.getElementById('backgroundImage');
+    if (this.checked) {
+        bgImage.style.display = 'none'; // Hide background when checked
+        document.body.style.backgroundColor = '#FFF6EA'; // Set light cream color background
+    } else {
+        bgImage.style.display = 'block'; // Show background when unchecked
+        document.body.style.backgroundColor = ''; // Remove background color
+    }
+});
+    </script>
     {% endblock %}
 </body>
 </html>
