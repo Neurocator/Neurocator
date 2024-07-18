@@ -34,14 +34,6 @@ CORS(app)
 session_username_key = 'neurocator_username'
 app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
 
-# # Initialize the SQLite database for the to-do list
-# def init_db():
-#     with sqlite3.connect('database.db') as conn:
-#         c = conn.cursor()
-#         c.execute('''CREATE TABLE IF NOT EXISTS tasks
-#                      (task TEXT, completed BOOLEAN)''')
-#         conn.commit()
-
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':    
@@ -71,8 +63,6 @@ def signUp():
             conn.commit()
             return redirect(url_for('index'))
         
-
-
   
 @app.route('/checklogin', methods=['GET', 'POST'])
 def checkLogin():
@@ -100,7 +90,12 @@ def checkLogin():
 
 @app.route('/home', methods=['GET', 'POST'])
 def home():
-    return render_template('index.html.j2')
+    return render_template('home.html.j2')
+
+@app.route('/forum', methods=['GET', 'POST'])
+def forum():
+    return render_template('forum.html.j2')
+
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
@@ -137,10 +132,6 @@ def transcribe():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
-
-@app.route('/forum', methods=['GET', 'POST'])
-def forum():
-    return render_template('forum.html.j2')
 
 @app.route('/longtermplanning')
 def planning():
