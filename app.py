@@ -1,21 +1,16 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify, redirect, url_for, send_from_directory
 from flask_cors import CORS
-#from utils import is_point_covered, process_transcript
 import sqlite3
-
-# import mysql.connector
-# mydb = mysql.connector.connect(
-#     host = "localhost",
-#     user = "root",
-#     password = "Teamb1#123",
-#     database = "neurocator",
-#     auth_plugin='mysql_native_password'
-# )
-# cursor = mydb.cursor()
-
 import os
 import psycopg2
 from jinja2 import Environment, FileSystemLoader
+
+# Utility functions
+def is_point_covered(transcript_tokens, point_text):
+    return point_text.lower() in transcript_tokens
+
+def process_transcript(transcript):
+    return transcript.split()
 
 # Database connection parameters
 db_params = {
@@ -32,30 +27,17 @@ conn = psycopg2.connect(**db_params)
 # Create a cursor
 cur = conn.cursor()
 
-# Execute a query (replace with your actual query)
+# Example query (optional, remove if not needed)
 cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
-
 conn.commit()
 
 app = Flask(__name__)
 CORS(app)
 
-# # Initialize the SQLite database for the to-do list
-# def init_db():
-#     with sqlite3.connect('database.db') as conn:
-#         c = conn.cursor()
-#         c.execute('''CREATE TABLE IF NOT EXISTS tasks
-#                      (task TEXT, completed BOOLEAN)''')
-#         conn.commit()
-
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
         return render_template('login.html.j2')
-
-# @app.route('/')
-# def index():
-#     return render_template('index.html.j2')
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
@@ -79,12 +61,14 @@ def transcribe():
         print(f"Transcript Tokens: {transcript_tokens}")
 
         for point in points:
-            if is_point_covered(transcript_tokens, point['text']):
+            if not point['covered'] and is_point_covered(transcript_tokens, point['text']):
                 point['covered'] = True
                 print(f"Point '{point['text']}' covered")
-            else:
-                point['covered'] = False
-                print(f"Point '{point['text']}' not covered")
+
+            for subpoint in point.get('subpoints', []):
+                if not subpoint['covered'] and is_point_covered(transcript_tokens, subpoint['text']):
+                    subpoint['covered'] = True
+                    print(f"Subpoint '{subpoint['text']}' covered")
 
         return jsonify(points)
     except Exception as e:
@@ -142,6 +126,10 @@ def complete_task(task_id):
 def faq():
     return render_template('faq.html.j2')
 
+@app.route('/download/<path:filename>')
+def download(filename):
+    directory = os.path.join(app.root_path, 'static/files/article')
+    return send_from_directory(directory, filename)
+
 if __name__ == '__main__':
-    #init_db()
     app.run(host='0.0.0.0', port=8080, debug=True)

@@ -1,90 +1,223 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
-<div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-  <div class="max-w-xl sm:mx-auto lg:max-w-2xl">
-    <div class="flex flex-col mb-16 sm:text-center">
-      <a href="/" class="mb-6 sm:mx-auto">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-indigo-50">
-          <svg class="w-10 h-10 text-deep-purple-accent-400" stroke="currentColor" viewBox="0 0 52 52">
-            <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
-          </svg>
+<style>
+    body, html {
+        font-family: 'OpenDyslexic', sans-serif;
+        background-color: #f0e3ce;
+        margin: 0px;
+        height: 100%;
+        overflow-x: hidden; /* Allow vertical scrolling */
+    }
+
+    .bg-img {
+        background-image: url("{{ url_for('static', filename='Neurocator Prototype.jpg') }}");
+        height: 100%;
+        width: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        display: block;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 60px; /* Add extra padding at the bottom */
+    }
+
+    .faq-container {
+        background: rgba(255, 255, 255, 0.95); /* Slightly higher opacity for better readability */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        max-width: 900px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px auto;
+    }
+
+    .faq-title {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .faq-text {
+        color: #333;
+        font-size: 1.5em;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .faq-item {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+
+    .faq-item .question-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .faq-item button.question {
+        width: calc(100% - 40px);
+        text-align: left;
+        background-color: #a3d6a3; /* Light green color */
+        border: none;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+        padding: 15px 20px;
+        border-radius: 20px; /* Rounded corners */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .faq-item button.question:focus {
+        outline: 2px solid #333; /* High contrast outline for focus */
+        outline-offset: 4px; /* Better visibility */
+    }
+
+    .faq-item button svg {
+        transform: rotate(0);
+        transition: transform 0.3s ease; /* Reduced animation for better sensory experience */
+    }
+
+    .faq-item.active button svg {
+        transform: rotate(180deg); /* Rotate arrow when active */
+    }
+
+    .faq-item .content {
+        display: none;
+        padding: 20px;
+        font-size: 1.2em; /* Slightly larger font size */
+        color: #333;
+        background-color: #e5d2a0; /* Light beige color */
+        border-radius: 20px; /* Rounded corners */
+        margin-top: 10px;
+    }
+
+    .faq-item.active .content {
+        display: block;
+    }
+
+    .diction-btn {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1em;
+        border-radius: 50%;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="bg-img" id="backgroundImage"></div>
+<div class="content">
+    <div class="faq-container">
+        <h1 class="faq-title">Frequently Asked Questions</h1>
+        <p class="faq-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
+        <div class="faq-item">
+            <div class="question-wrapper">
+                <button class="diction-btn" onclick="speakText('The quick, brown fox jumps over a lazy dog?')">🔊</button>
+                <button type="button" class="question" onclick="toggleFaq(this)">
+                    The quick, brown fox jumps over a lazy dog?
+                    <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
+                        <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="content">
+                <div class="question-wrapper">
+                    <button class="diction-btn" onclick="speakText('Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.')">🔊</button>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
+                </div>
+            </div>
         </div>
-      </a>
-      <div class="max-w-xl md:mx-auto sm:text-center lg:max-w-2xl">
-        <h2 class="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
-          <span class="relative inline-block">
-            <svg viewBox="0 0 52 24" fill="currentColor" class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
-              <defs>
-                <pattern id="ec5d8ef5-b853-4714-b94f-df28ec98eeb7" x="0" y="0" width=".135" height=".30"><circle cx="1" cy="1" r=".7"></circle></pattern>
-              </defs>
-              <rect fill="url(#ec5d8ef5-b853-4714-b94f-df28ec98eeb7)" width="52" height="24"></rect>
-            </svg>
-            <span class="relative">The</span>
-          </span>
-          quick, brown fox jumps over a lazy dog
-        </h2>
-        <p class="text-base text-gray-700 md:text-lg">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
-      </div>
+        <div class="faq-item">
+            <div class="question-wrapper">
+                <button class="diction-btn" onclick="speakText('The first mate and his Skipper too will do?')">🔊</button>
+                <button type="button" class="question" onclick="toggleFaq(this)">
+                    The first mate and his Skipper too will do?
+                    <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
+                        <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="content">
+                <div class="question-wrapper">
+                    <button class="diction-btn" onclick="speakText('Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.')">🔊</button>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="question-wrapper">
+                <button class="diction-btn" onclick="speakText('Is the Space Pope reptilian!?')">🔊</button>
+                <button type="button" class="question" onclick="toggleFaq(this)">
+                    Is the Space Pope reptilian!?
+                    <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
+                        <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="content">
+                <div class="question-wrapper">
+                    <button class="diction-btn" onclick="speakText('Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.')">🔊</button>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
+                </div>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="question-wrapper">
+                <button class="diction-btn" onclick="speakText('How much money you got on you?')">🔊</button>
+                <button type="button" class="question" onclick="toggleFaq(this)">
+                    How much money you got on you?
+                    <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
+                        <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
+                    </svg>
+                </button>
+            </div>
+            <div class="content">
+                <div class="question-wrapper">
+                    <button class="diction-btn" onclick="speakText('Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.')">🔊</button>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="space-y-4">
-      <div class="border rounded shadow-sm">
-        <button type="button" aria-label="Open item" title="Open item" class="flex items-center justify-between w-full p-4 focus:outline-none">
-          <p class="text-lg font-medium">The quick, brown fox jumps over a lazy dog?</p>
-          <div class="flex items-center justify-center w-8 h-8 border rounded-full">
-            <!-- Add "transform rotate-180" classes on svg, if is open" -->
-            <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200">
-              <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
-            </svg>
-          </div>
-        </button>
-        <!-- Show content if is open 
-        <div class="p-4 pt-0"><p class="text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p></div>
-        -->
-      </div>
-      <div class="border rounded shadow-sm">
-        <button type="button" aria-label="Open item" title="Open item" class="flex items-center justify-between w-full p-4 focus:outline-none">
-          <p class="text-lg font-medium">The first mate and his Skipper too will do?</p>
-          <div class="flex items-center justify-center w-8 h-8 border rounded-full">
-            <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200 transform rotate-180">
-              <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
-            </svg>
-          </div>
-        </button>
-        <!-- Show content if is open 
-        <div class="p-4 pt-0"><p class="text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p></div>
-        -->
-      </div>
-      <div class="border rounded shadow-sm">
-        <button type="button" aria-label="Open item" title="Open item" class="flex items-center justify-between w-full p-4 focus:outline-none">
-          <p class="text-lg font-medium">Is the Space Pope reptilian!?</p>
-          <div class="flex items-center justify-center w-8 h-8 border rounded-full">
-            <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200 transform rotate-180">
-              <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
-            </svg>
-          </div>
-        </button>
-        <!-- Show content if is open 
-        <div class="p-4 pt-0"><p class="text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p></div>
-        -->
-      </div>
-      <div class="border rounded shadow-sm">
-        <button type="button" aria-label="Open item" title="Open item" class="flex items-center justify-between w-full p-4 focus:outline-none">
-          <p class="text-lg font-medium">How much money you got on you?</p>
-          <div class="flex items-center justify-center w-8 h-8 border rounded-full">
-            <svg viewBox="0 0 24 24" class="w-3 text-gray-600 transition-transform duration-200 transform rotate-180">
-              <polyline fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" points="2,7 12,17 22,7" stroke-linejoin="round"></polyline>
-            </svg>
-          </div>
-        </button>
-        <!-- Show content if is open
-        <div class="p-4 pt-0"><p class="text-gray-700">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p></div>
-        -->
-      </div>
-    </div>
-  </div>
-</div>
 
+<script>
+    function toggleFaq(button) {
+        const faqItem = button.closest('.faq-item');
+        faqItem.classList.toggle('active');
+    }
 
+    function speakText(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utterance);
+        } else {
+            alert('Your browser does not support text-to-speech.');
+        }
+    }
+</script>
 
 {% endblock %}
