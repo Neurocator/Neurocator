@@ -1,13 +1,19 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for, session
+from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-#from utils import is_point_covered, process_transcript
 import sqlite3
 
 
 import os
 import psycopg2
 from jinja2 import Environment, FileSystemLoader
+
+# Utility functions
+def is_point_covered(transcript_tokens, point_text):
+    return point_text.lower() in transcript_tokens
+
+def process_transcript(transcript):
+    return transcript.split()
 
 # Database connection parameters
 db_params = {
@@ -22,6 +28,11 @@ conn = psycopg2.connect(**db_params)
 # Create a cursor
 cur = conn.cursor()
 
+# Example query (optional, remove if not needed)
+cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
+conn.commit()
+
+
 app = Flask(__name__)
 CORS(app)
 
@@ -33,10 +44,7 @@ CORS(app)
 #                      (task TEXT, completed BOOLEAN)''')
 #         conn.commit()
 
-session_username_key = 'neurocator_username'
-app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':    
         return render_template('login.html.j2', username=session.get(session_username_key))
@@ -96,12 +104,14 @@ def transcribe():
         print(f"Transcript Tokens: {transcript_tokens}")
 
         for point in points:
-            if is_point_covered(transcript_tokens, point['text']):
+            if not point['covered'] and is_point_covered(transcript_tokens, point['text']):
                 point['covered'] = True
                 print(f"Point '{point['text']}' covered")
-            else:
-                point['covered'] = False
-                print(f"Point '{point['text']}' not covered")
+
+            for subpoint in point.get('subpoints', []):
+                if not subpoint['covered'] and is_point_covered(transcript_tokens, subpoint['text']):
+                    subpoint['covered'] = True
+                    print(f"Subpoint '{subpoint['text']}' covered")
 
         return jsonify(points)
     except Exception as e:
@@ -159,6 +169,11 @@ def complete_task(task_id):
 def faq():
     return render_template('faq.html.j2')
 
+@app.route('/download/<path:filename>')
+def download(filename):
+    directory = os.path.join(app.root_path, 'static/files/article')
+    return send_from_directory(directory, filename)
+
 # general server-side validation 
 def serverSideValidation(inputs):
     for input in inputs:
@@ -169,5 +184,4 @@ def serverSideValidation(inputs):
     return validated
 
 if __name__ == '__main__':
-    #init_db()
     app.run(host='0.0.0.0', port=8080, debug=True)

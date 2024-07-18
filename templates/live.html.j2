@@ -34,6 +34,12 @@
             mainPointInput.value = '';
         });
 
+        mainPointInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                addMainPointBtn.click();
+            }
+        });
+
         function renderPoints() {
             bulletPointsList.innerHTML = '';
             points.forEach((mainPoint, mainIndex) => {
@@ -41,7 +47,8 @@
                 mainPointItem.className = 'bullet-point main-point';
                 mainPointItem.id = `mainPoint${mainIndex}`;
                 mainPointItem.innerHTML = `
-                    ${mainPoint.text} 
+                    <span class="bullet">&#8226;</span>
+                    <span class="main-point-text">${mainPoint.text}</span>
                     <button class="add-subpoint-btn" data-index="${mainIndex}">+</button>
                     <span class="delete-btn" data-index="${mainIndex}">🗑️</span>
                     <input type="text" class="input-box subpoint-input" placeholder="Enter subpoint" data-index="${mainIndex}" style="display:none;">
@@ -55,7 +62,11 @@
                         const subpointItem = document.createElement('li');
                         subpointItem.className = 'bullet-point subpoint';
                         subpointItem.id = `mainPoint${mainIndex}_subpoint${subIndex}`;
-                        subpointItem.innerHTML = `${subpoint.text} <span class="delete-btn" data-main-index="${mainIndex}" data-sub-index="${subIndex}">🗑️</span>`;
+                        subpointItem.innerHTML = `
+                            <span class="bullet">&#8226;</span>
+                            <span class="subpoint-text">${subpoint.text}</span>
+                            <span class="delete-btn" data-main-index="${mainIndex}" data-sub-index="${subIndex}">🗑️</span>
+                        `;
                         subpointsList.appendChild(subpointItem);
                     });
                     bulletPointsList.appendChild(subpointsList);
@@ -175,15 +186,15 @@
     body {
         background-color: #FFF6EA;
         color: black;
-        font-family: Arial, sans-serif;
+        font-family: 'OpenDyslexic', sans-serif;
     }
     .container {
         max-width: 600px;
         margin: 50px auto;
         padding: 20px;
-        border-radius: 10px;
-        background-color: #B0D39B;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        background-color: #f5e8d8;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -191,7 +202,9 @@
     h1 {
         text-align: center;
         margin-bottom: 20px;
-        color: white;
+        color: #333;
+        font-size: 2em;
+        font-weight: bold;
     }
     .input-container {
         display: flex;
@@ -203,7 +216,7 @@
         padding: 10px;
         margin-right: 10px;
         border: none;
-        border-radius: 5px;
+        border-radius: 10px;
         background-color: white;
         color: black;
         font-size: 16px;
@@ -215,9 +228,10 @@
         padding: 10px 20px;
         background-color: #42a5f5;
         border: none;
-        border-radius: 5px;
+        border-radius: 10px;
         cursor: pointer;
         color: white;
+        font-size: 1em;
     }
     .btn-add:hover {
         background-color: #1e88e5;
@@ -227,8 +241,8 @@
         text-align: center;
     }
     .bullet-points-list {
-        list-style: disc;
-        padding-left: 20px;
+        list-style-type: none;
+        padding-left: 0;
         margin: 0 auto;
         display: inline-block;
         text-align: left;
@@ -239,14 +253,21 @@
         background-color: #673ab7;
         margin-bottom: 10px;
         padding: 10px;
-        border-radius: 5px;
+        border-radius: 10px;
         color: white;
+    }
+    .bullet {
+        margin-right: 10px;
+        font-size: 1.5em;
+    }
+    .main-point-text, .subpoint-text {
+        flex: 1;
     }
     .bullet-point .delete-btn {
         margin-left: auto;
         cursor: pointer;
     }
-    .bullet-point .add-subpoint-btn {
+        .bullet-point .add-subpoint-btn {
         margin-left: 10px;
         cursor: pointer;
         background: none;
@@ -255,12 +276,17 @@
         font-size: 18px;
     }
     .subpoints-list {
-        list-style: circle;
-        padding-left: 20px;
+        list-style-type: disc;
+        padding-left: 30px;
+        margin-top: 10px;
     }
     .subpoint {
         background-color: #9575cd;
         margin-top: 5px;
+        padding: 8px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
     }
     .crossed-off {
         text-decoration: line-through;
@@ -268,6 +294,25 @@
     }
     .subpoint-input {
         margin-top: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        width: calc(100% - 10px); /* Adjust width for padding */
+        font-size: 14px;
+    }
+    .main-point {
+        font-weight: bold;
+    }
+    .bullet-point-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .add-subpoint-container {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
     }
 </style>
 {% endblock %}
+       
