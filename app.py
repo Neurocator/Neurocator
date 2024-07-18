@@ -18,6 +18,7 @@ db_params = {
     'port': os.getenv('PGPORT', '5432'),
     'sslmode': 'require'
 }
+import logging
 
 # Utility functions
 def is_point_covered(transcript_tokens, point_text):
