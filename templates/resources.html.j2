@@ -1,5 +1,9 @@
 {% extends "base.html.j2" %}
 
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% endblock %}
+
 {% block body %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -39,44 +43,49 @@
     </div>
   </div>
 
-  <div class="bg-white py-8">
+  <div class="bg-page py-8">
     <div class="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
       <div class="flex flex-wrap justify-center mb-10">
         <button data-group="All" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">All</button>
         <button data-group="Articles" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Articles</button>
         <button data-group="Infographics" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Infographics</button>
       </div>
-<!-- PDF Resource --->
-<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-  <div class="resource-item" data-group="Articles">
-    <div class="p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h2 class="mb-4 text-xl font-bold">Understanding ADHD</h2>
-      <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-      <a href="/download/understanding-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-    </div>
-  </div>
+      <!-- PDF Resource --->
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="resource-item" data-group="Articles">
+          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-bold">Understanding ADHD</h2>
+            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
+            <a href="/download/understanding-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
+          </div>
+        </div>
 
-  <!--- Infographic Resource --->
-  <div class="resource-item" data-group="Infographics">
-    <div class="p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h2 class="mb-4 text-xl font-bold">ADHD Statistics</h2>
-      <p class="mb-4">Download our infographic to see the latest statistics on ADHD.</p>
-      <a href="/download/adhd-statistics.png" class="text-brand-primary hover:underline">Download Infographic</a>
+        <!--- Infographic Resource --->
+        <div class="resource-item" data-group="Infographics">
+          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-bold">ADHD Statistics</h2>
+            <p class="mb-4">Download our infographic to see the latest statistics on ADHD.</p>
+            <a href="/download/adhd-statistics.png" class="text-brand-primary hover:underline">Download Infographic</a>
+          </div>
+        </div>
+        <!-- Add more resources here as needed -->
+        <div class="resource-item" data-group="Articles">
+          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
+            <h2 class="mb-4 text-xl font-bold">Living with ADHD</h2>
+            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
+            <a href="/download/living-with-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <!-- Add more resources here as needed -->
-  <div class="resource-item" data-group="Articles">
-    <div class="p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h2 class="mb-4 text-xl font-bold">Living with ADHD</h2>
-      <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-      <a href="/download/living-with-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-    </div>
-  </div>
-</div>
-
 </div>
 
 <style>
+  body {
+    font-family: 'OpenDyslexic', sans-serif;
+    background-color: #FFF6EA;
+  }
   .bg-brand-primary {
     background-color: #B0D39B;
   }
@@ -85,6 +94,9 @@
   }
   .group-button.active {
     border: 2px solid #B0D39B;
+  }
+  .resource-card:hover {
+    background-color: #eeeae2;
   }
 </style>
 
