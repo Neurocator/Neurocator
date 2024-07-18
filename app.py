@@ -1,6 +1,9 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
+
+
 import os
 import psycopg2
 from jinja2 import Environment, FileSystemLoader
@@ -20,10 +23,8 @@ db_params = {
     'host': 'ep-dark-forest-a6dtlznj.us-west-2.aws.neon.tech',
     'port': '5432'  # Default PostgreSQL port, change if your setup is different
 }
-
 # Connect to the database
 conn = psycopg2.connect(**db_params)
-
 # Create a cursor
 cur = conn.cursor()
 
@@ -31,13 +32,44 @@ cur = conn.cursor()
 cur.execute("INSERT INTO neurocator (name) VALUES ('hi')") 
 conn.commit()
 
+
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
-        return render_template('login.html.j2')
+        return render_template('login.html.j2', username=session.get('aanikatangirala_username'))
+
+    
+@app.route('/checklogin', methods=['GET', 'POST'])
+def checkLogin():
+    inputUsername = request.values.get("email")
+    inputPassword = request.values.get("password")
+    inputs = ['email', 'password']
+    validated = serverSideValidation(inputs)
+    if validated == True:
+        query = "SELECT password FROM users WHERE username=%s"
+        queryVars = (inputUsername, )
+        cur.execute(query, queryVars)
+        conn.commit()
+        results = cur.fetchall()
+        if (len(results) == 1):
+            hashedPassword = results[0]['password']
+            if check_password_hash(hashedPassword, inputPassword):
+                session['neurocator_username'] = inputUsername
+                return redirect(url_for('index'))
+
+        
+
+# general server-side validation 
+def serverSideValidation(inputs):
+    for input in inputs:
+        if (len(request.values.get(input)) == 0):
+            validated = False
+        else:
+            validated = True
+    return validated
 
 @app.route('/live', methods=['GET', 'POST'])
 def live():
