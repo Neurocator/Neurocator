@@ -7,6 +7,7 @@ import sqlite3
 import os
 import psycopg2
 from jinja2 import Environment, FileSystemLoader
+import logging
 
 # Utility functions
 def is_point_covered(transcript_tokens, point_text):
@@ -17,13 +18,17 @@ def process_transcript(transcript):
 
 print("hello")
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 # Database connection parameters
 db_params = {
-    'dbname': 'neurocator',
-    'user': 'neurocator_owner',
-    'password': '3j1HgiIuwVoO',  # In production, use environment variables for sensitive data
-    'host': 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech',
-    'port': '5432',  # Default PostgreSQL port, change if your setup is different
+    'dbname': os.environ.get('PGDATABASE', 'neurocator'),
+    'user': os.environ.get('PGUSER', 'neurocator_owner'),
+    'password': os.environ.get('PGPASSWORD', '3j1HgiIuwVoO'),
+    'host': os.environ.get('PGHOST', 'ep-autumn-scene-a6huvqfz.us-west-2.aws.neon.tech'),
+    'port': os.environ.get('PGPORT', '5432'),
+    'sslmode': 'require'
 }
 
 conn = psycopg2.connect(**db_params)

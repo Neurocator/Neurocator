@@ -184,7 +184,7 @@
 
 <style>
     body {
-        background-color: #FFF6EA;
+        background-color: #F0E3CE;
         color: black;
         font-family: 'OpenDyslexic', sans-serif;
     }
@@ -193,7 +193,7 @@
         margin: 50px auto;
         padding: 20px;
         border-radius: 20px;
-        background-color: #f5e8d8;
+        background-color: #B0D39B;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
@@ -217,7 +217,7 @@
         margin-right: 10px;
         border: none;
         border-radius: 10px;
-        background-color: white;
+        background-color: #fffdfa;
         color: black;
         font-size: 16px;
     }
@@ -226,7 +226,7 @@
     }
     .btn-add {
         padding: 10px 20px;
-        background-color: #42a5f5;
+        background-color: #8bb3db;
         border: none;
         border-radius: 10px;
         cursor: pointer;
@@ -234,7 +234,7 @@
         font-size: 1em;
     }
     .btn-add:hover {
-        background-color: #1e88e5;
+        background-color: #7990a9;
     }
     .list-container {
         width: 100%;
@@ -255,19 +255,23 @@
         padding: 10px;
         border-radius: 10px;
         color: white;
+        position: relative; /* Needed for ::before positioning */
     }
-    .bullet {
-        margin-right: 10px;
-        font-size: 1.5em;
+    .bullet-point::before {
+        content: ''; /* Remove bullet for main points */
+    }
+    .subpoint::before {
+        content: ''; /* Remove bullet for subpoints */
     }
     .main-point-text, .subpoint-text {
         flex: 1;
+        margin-left: 0; /* Remove margin to align text without bullets */
     }
     .bullet-point .delete-btn {
         margin-left: auto;
         cursor: pointer;
     }
-        .bullet-point .add-subpoint-btn {
+    .bullet-point .add-subpoint-btn {
         margin-left: 10px;
         cursor: pointer;
         background: none;
@@ -276,17 +280,19 @@
         font-size: 18px;
     }
     .subpoints-list {
-        list-style-type: disc;
-        padding-left: 30px;
+        list-style-type: none;
+        padding-left: 40px; /* Increased padding for more indentation */
         margin-top: 10px;
     }
     .subpoint {
+        display: flex;
+        align-items: center;
         background-color: #9575cd;
         margin-top: 5px;
         padding: 8px;
         border-radius: 8px;
-        display: flex;
-        align-items: center;
+        color: white;
+        position: relative; /* Needed for ::before positioning */
     }
     .crossed-off {
         text-decoration: line-through;
@@ -315,4 +321,3 @@
     }
 </style>
 {% endblock %}
-       

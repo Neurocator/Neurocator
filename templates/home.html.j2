@@ -1,146 +1,114 @@
 {% extends "base.html.j2" %}
 
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% endblock %}
+
 {% block body %}
 <!-- Main Content -->
-
 <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
     <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
         <div>
-            <p
-                class="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-accent-400">
-                Subtext
-            </p>
         </div>
-        <h2
-            class="max-w-lg mb-6 font-sans text-3xl font-bold leading-none tracking-tight text-gray-900 sm:text-4xl md:mx-auto">
+        <h2 class="max-w-lg mb-6 text-4xl font-bold leading-none tracking-tight text-gray-900 sm:text-5xl md:mx-auto" style="font-family: 'OpenDyslexic', sans-serif;">
             <span class="relative inline-block">
-                <svg viewBox="0 0 52 24" fill="currentColor"
-                    class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
+                <svg viewBox="0 0 52 24" fill="currentColor" class="absolute top-0 left-0 z-0 hidden w-32 -mt-8 -ml-20 text-blue-gray-100 lg:w-32 lg:-ml-28 lg:-mt-10 sm:block">
                     <defs>
                         <pattern id="ea469ae8-e6ec-4aca-8875-fc402da4d16e" x="0" y="0" width=".135" height=".30">
                             <circle cx="1" cy="1" r=".7"></circle>
                         </pattern>
                     </defs>
-                    <rect fill="url(#ea469ae8-e6ec-4aca-8875-fc402da4d16e)" width="52" height="24"></rect>
                 </svg>
                 <span class="relative">Our team</span>
             </span>
             Rest of title
         </h2>
-        <p class="text-base text-gray-700 md:text-lg">
+        <p class="text-lg text-gray-700 md:text-xl">
             Description of what we do
         </p>
     </div>
     <div class="grid gap-8 row-gap-10 lg:grid-cols-2">
-        <div class="max-w-md sm:mx-auto sm:text-center">
+        <div class="category-box">
             <a href="/forum">
-                <div
-                    class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-                    <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
-                        viewBox="0 0 52 52">
-                        <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"
-                            points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
-                    </svg>
+                <div class="flex items-center justify-center w-20 h-20 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-28 sm:h-28">
+                    <img src="/static/home_icons/forum.png" class="w-16 h-16 sm:w-20 sm:h-20" alt="Forum Icon">
                 </div>
-
-                <h6 class="mb-3 text-xl font-bold leading-5">Forum</h6>
-
+                <h6 class="mb-3 text-2xl font-bold leading-5">Forum</h6>
             </a>
-            <p class="mb-3 text-sm text-gray-900">
+            <p class="mb-3 text-lg text-gray-900">
                 Forum to discuss ways to make teaching easier
             </p>
         </div>
-        <div class="max-w-md sm:mx-auto sm:text-center">
+        <div class="category-box">
             <a href="/resources">
-                <div
-                    class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-                    <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
-                        viewBox="0 0 52 52">
-                        <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"
-                            points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
-                    </svg>
+                <div class="flex items-center justify-center w-20 h-20 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-28 sm:h-28">
+                    <img src="/static/home_icons/resources.png" class="w-16 h-16 sm:w-20 sm:h-20" alt="Resources Icon">
                 </div>
-                <h6 class="mb-3 text-xl font-bold leading-5">Resouces</h6>
+                <h6 class="mb-3 text-2xl font-bold leading-5">Resources</h6>
             </a>
-            <p class="mb-3 text-sm text-gray-900">
+            <p class="mb-3 text-lg text-gray-900">
                 Resources and sites that help you ______ your classroom
             </p>
         </div>
-        <div class="max-w-md sm:mx-auto sm:text-center">
+        <div class="category-box">
             <a href="/live">
-                <div
-                    class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-                    <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
-                        viewBox="0 0 52 52">
-                        <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"
-                            points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
-                    </svg>
+                <div class="flex items-center justify-center w-20 h-20 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-28 sm:h-28">
+                    <img src="/static/home_icons/live.png" class="w-16 h-16 sm:w-20 sm:h-20" alt="Live Assistance Icon">
                 </div>
-                <h6 class="mb-3 text-xl font-bold leading-5">Lecture Live Assistance</h6>
+                <h6 class="mb-3 text-2xl font-bold leading-5">Lecture Live Assistance</h6>
             </a>
-            <p class="mb-3 text-sm text-gray-900">
+            <p class="mb-3 text-lg text-gray-900">
                 A tool that helps you keep track of what you have covered
             </p>
         </div>
-        <div class="max-w-md sm:mx-auto sm:text-center">
-            <a href="/longtermplanning">
-                <div
-                    class="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-                    <svg class="w-12 h-12 text-deep-purple-accent-400 sm:w-16 sm:h-16" stroke="currentColor"
-                        viewBox="0 0 52 52">
-                        <polygon stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"
-                            points="29 13 14 29 25 29 23 39 38 23 27 23"></polygon>
-                    </svg>
+        <div class="category-box">
+            <a href="/todo">
+                <div class="flex items-center justify-center w-20 h-20 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-28 sm:h-28">
+                    <img src="/static/home_icons/todo.png" class="w-16 h-16 sm:w-20 sm:h-20" alt="Long-Term Planning Icon">
                 </div>
-                <h6 class="mb-3 text-xl font-bold leading-5">Long-Term Planning</h6>
+                <h6 class="mb-3 text-2xl font-bold leading-5">To Do List</h6>
             </a>
-            <p class="mb-3 text-sm text-gray-900">
-                A Planner that helps you generate what you might need for a class
+            <p class="mb-3 text-lg text-gray-900">
+                A planner that helps you generate what you might need for a class
             </p>
         </div>
     </div>
 </div>
-{#
-<div class="py-6">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-            <!-- Your main content goes here -->
-            <h1 class="text-3xl font-bold text-gray-900">Welcome! What would you like to do today?</h1>
-        </div>
-    </div>
-</div>
 
-
-
-<!-- Page Options -->
-<!-- <form method = "POST" action="forum"> form is going to be submitted via GET request-->
-<div class="container">
-    <div>
-        <a href="/forum">
-            <button type="submit" class="page-option">Forum</button>
-        </a>
-    </div>
-
-    <div>
-        <a href="/resources">
-            <button type="submit" class="page-option">Resources</button>
-        </a>
-    </div>
-
-    <div>
-        <a href="/live">
-            <button type="submit" class="page-option">Lecture Live Assistance</button>
-        </a>
-    </div>
-
-
-    <div>
-        <a href="/longtermplanning">
-            <button type="submit" class="page-option">Long-Term Planning Tool</button>
-        </a>
-    </div>
-</div> #}
-
-</html>
+<style>
+    body {
+        font-family: 'OpenDyslexic', sans-serif;
+        background-color: #F0E3CE;
+    }
+    .bg-brand-primary {
+        background-color: #B0D39B;
+    }
+    .text-brand-primary {
+        color: #B0D39B;
+    }
+    .group-button.active {
+        border: 2px solid #B0D39B;
+    }
+    .resource-card:hover {
+        background-color: #F5E8D8;
+    }
+    .category-box {
+        padding: 30px;
+        border-radius: 20px;
+        background-color: #f5e8d8;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s ease;
+    }
+    .category-box:hover {
+        background-color: #e8d4bf;
+    }
+    .text-lg {
+        font-size: 1.125rem;
+    }
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+</style>
 
 {% endblock %}
