@@ -1,0 +1,8 @@
+{% for post in posts %}
+    <div class="individual-post">
+        <td>Started by {{post.username}}</td>
+        <td> on {{post.date}}</td>
+        <td>{{post.title}}</td>
+        <td>{{post.content}}</td>
+    </div>
+{% endfor %}

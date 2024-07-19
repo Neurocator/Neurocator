@@ -7,3 +7,11 @@
     font-style: normal; /* Adjust style if needed */
 }
 
+.logout-button {
+    background-color: #ba80c4;
+}
+
+.logout-button:hover {
+    background-color: #ae59bd;
+}
+
