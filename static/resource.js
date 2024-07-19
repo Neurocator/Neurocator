@@ -112,6 +112,30 @@ const resources = [
         description: 'Academic Autism Spectrum Partnership in Research and Education (AASPIRE) conducts research for the benefit of the autistic community.'
     },
     {
+        group: 'Dyslexia',
+        link: 'https://www.cde.ca.gov/ci/cr/dy/',
+        title: 'Dyslexia - Curriculum and Instruction Resources (CA Dept of Education)',
+        description: 'Provides resources and guidelines for educators to support students with dyslexia.'
+    },
+    {
+        group: 'Dyslexia',
+        link: 'https://ksmo.dyslexiaida.org/teacher-resources/',
+        title: 'International Dyslexia Association',
+        description: 'Promotes effective teaching approaches and related clinical educational intervention strategies for dyslexia.'
+    },
+    {
+        group: 'Dyslexia',
+        link: 'https://www.chconline.org/resourcelibrary/understanding-dyslexia/?utm_source=google_cpc&utm_medium=paid_search&utm_campaign=dsa&utm_term=&gad_source=1&gclid=CjwKCAjwtNi0BhA1EiwAWZaANNjGzJff96LK7I4K1BuqnVBU02LOfV1f7GJinn-4WPhCGkao58wFpRoCWI8QAvD_BwE',
+        title: 'Children\'s Health Council - Understanding Dyslexia',
+        description: 'Offers resources to help understand and manage dyslexia in children.'
+    },
+    {
+        group: 'Dyslexia',
+        link: 'https://opendyslexic.org/',
+        title: 'OpenDyslexic Font',
+        description: 'A free typeface designed to increase readability for readers with dyslexia.'
+    },
+    {
         group: 'Self-Advocacy',
         link: 'https://nacdd.org/self-advocacy-resources/',
         title: 'NACDD (National Association of Councils on Developmental Disabilities)',
@@ -135,30 +159,6 @@ const resources = [
         title: 'Disability Rights California',
         description: 'Protects and advocates for the rights of Californians with disabilities.'
     },
-    {
-        group: 'Dyslexia',
-        link: 'https://www.cde.ca.gov/ci/cr/dy/',
-        title: 'Dyslexia - Curriculum and Instruction Resources (CA Dept of Education)',
-        description: 'Provides resources and guidelines for educators to support students with dyslexia.'
-    },
-    {
-        group: 'Dyslexia',
-        link: 'https://ksmo.dyslexiaida.org/teacher-resources/',
-        title: 'International Dyslexia Association',
-        description: 'Promotes effective teaching approaches and related clinical educational intervention strategies for dyslexia.'
-    },
-    {
-        group: 'Dyslexia',
-        link: 'https://www.chconline.org/resourcelibrary/understanding-dyslexia/?utm_source=google_cpc&utm_medium=paid_search&utm_campaign=dsa&utm_term=&gad_source=1&gclid=CjwKCAjwtNi0BhA1EiwAWZaANNjGzJff96LK7I4K1BuqnVBU02LOfV1f7GJinn-4WPhCGkao58wFpRoCWI8QAvD_BwE',
-        title: 'Children\'s Health Council - Understanding Dyslexia',
-        description: 'Offers resources to help understand and manage dyslexia in children.'
-    },
-    {
-        group: 'Dyslexia',
-        link: 'https://opendyslexic.org/',
-        title: 'OpenDyslexic Font',
-        description: 'A free typeface designed to increase readability for readers with dyslexia.'
-    },   
     {
         group: 'Organization',
         link: 'https://www.theanimatedteacherblog.com/organizational-items-for-teachers/',
