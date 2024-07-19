@@ -26,7 +26,6 @@
   });
 </script>
 <div class="mb-16">
-
   <div class="banner">
     <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
@@ -45,23 +44,17 @@
   <div class="bg-page py-8">
     <div class="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
       <div class="flex flex-wrap justify-center mb-10">
-        <button data-group="All"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">All</button>
-        <button data-group="Mental Health"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Mental Health</button>
-        <button data-group="Autism"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Autism</button>
-        <button data-group="ADHD"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">ADHD</button>
-        <button data-group="Dyslexia"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Dyslexia</button>
-        <button data-group="Self-Advocacy"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Self-Advocacy</button>
-        <button data-group="Organization"
-          class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Organization</button>
+        <button data-group="All" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">All</button>
+        <button data-group="Mental Health" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Mental Health</button>
+        <button data-group="Autism" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Autism</button>
+        <button data-group="ADHD" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">ADHD</button>
+        <button data-group="Dyslexia" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Dyslexia</button>
+        <button data-group="Self-Advocacy" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Self-Advocacy</button>
+        <button data-group="Organization" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Organization</button>
       </div>
 
-      <!--- Infographic Resource --->
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Infographic Resource -->
         <div class="resource-item" data-group="Infographics">
           <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
             <h2 class="mb-4 text-xl font-bold">Overview of Neurodiversity</h2>
@@ -69,10 +62,8 @@
             <a href="static/files/article/neurodiversity-overview.jpg" class="text-brand-primary hover:underline">Download Infographic</a>
           </div>
         </div>
-      
-      
-      <!-- PDF Resource --->
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        
+        <!-- PDF Resources -->
         <div class="resource-item" data-group="Articles">
           <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
             <h2 class="mb-4 text-xl font-bold">Understanding ADHD</h2>
@@ -88,14 +79,10 @@
             <a href="/download/living-with-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
           </div>
         </div>
-        
-        
       </div>
     </div>
   </div>
 </div>
-
-<script type="text/javascript" src="../static/resource.js"></script>
 
 <style>
   h1.textstyle {
@@ -108,7 +95,7 @@
   }
 
   .banner {
-    background-color: #B0D39B
+    background-color: #B0D39B;
   }
 
   .bg-brand-primary {
