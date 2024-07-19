@@ -36,7 +36,7 @@
 
 <a href="addpost">
     <div>
-        <button type="submit">
+        <button type="submit" class="addpostbutton">
         <img src="static\newpost.png" alt="newpost" />
         </button>
     </div>
@@ -63,6 +63,7 @@ h1.textstyle {
 body {
     font-family: 'OpenDyslexic', sans-serif;
     background-color: #f0e3ce;
+
   }
 
     .banner {
@@ -116,10 +117,19 @@ body {
         padding: 20px;
         border-bottom: 1px solid #ddd;
         padding-bottom: 50px;
+        margin-bottom: 20px;
     }
 
     .individual-post:last-child {
         border-bottom: none;
+    }
+
+    .addpostbutton {
+        height: 100px;
+        width: 100px;
+        position: fixed;
+        bottom: 0;
+        right: 0;
     }
 
     .post-info {
