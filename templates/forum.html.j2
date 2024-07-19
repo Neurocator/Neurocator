@@ -8,7 +8,13 @@
 <div class="posts">
 <h2>Recent Posts!</h2>
 {% if posts|length %}
-    {{posts}}
+    {% for post in posts %}
+            <div class="individual-post">
+                <p>Posted by {{ post['username'] }} on {{ post['date'] }}</p>
+                <p>{{ post['title'] }}</p>
+                <p>{{ post['content'] }}</p>
+            </div>
+    {% endfor %}
 {% else %}
 <p>There are no posts yet! Add the first one here: <a href="/addpost">Add a New Post</a></p>
 {% endif %}
