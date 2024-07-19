@@ -22,12 +22,12 @@
         <form method="POST" action="addpost">
             <div class="container">
                 <div class="">
-                    <label for="title">Title</label>
+                    <label for="title" class="form">Title</label>
                     <input type="text" id="title" name="title" placeholder="Enter your Post Title" required>
                 </div>
                 <div class="">
-                    <label for="content">Content</label>
-                    <input type="text" id="content" name="content" placeholder="Enter your Post Content" required>
+                    <label for="content" class="form">Content</label>
+                    <input type="text" id="content" name="content" size="200" placeholder="Enter your Post Content" required>
                 </div>
                 <div>
                     <button type="submit" class="submit-button">Submit!</button>
@@ -44,6 +44,13 @@
         background-color: #f0e3ce;
     }
     
+    .form {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #333;
+        font-size: 1.2em;
+    }
 
     .container {
         max-width: 600px;
@@ -56,6 +63,8 @@
         flex-direction: column;
         align-items: center;
         align-content: space-around;
+        padding-top: 30px;
+        padding-bottom: 30px;
     }
 
     h2 {

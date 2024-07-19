@@ -5,6 +5,7 @@ import sqlite3
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import date
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -138,7 +139,8 @@ def addPost():
         queryVars = (username, inputTitle, inputContent)
         cur.execute(query, queryVars)
         conn.commit()
-        date = date.today()
+        today = date.now()
+        print(today[0] +" "+ today[1] + " " + today[2])
         query = "INSERT INTO posts (date) VALUES (%s)"
         queryVars = (date)
         cur.execute(query, queryVars)
