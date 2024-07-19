@@ -107,25 +107,25 @@ def forum():
     print(posts)
     return render_template('forum.html.j2', posts=posts)
 
-# @app.route('/addpost', methods=['GET', 'POST'])
-# def addPost():
-#     if session.get(session_username_key) == None:
-#         return redirect(url_for('index'))
-#     if request.method == 'GET':
-#         username = session.get(session_username_key)
-#         return render_template('addpost.html.j2', username)
-#     else:
-#         username = session.get(session_username_key)
-#         inputTitle = request.values.get("title")
-#         inputContent = request.values.get("content")
-#         query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-#         queryVars = (username, inputTitle, inputContent)
-#         cur.execute(query, queryVars)
-#         conn.commit()
-#         query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
-#         queryVars = (inputContent, )
-#         cur.execute(query, queryVars)
-#         conn.commit()
+@app.route('/addpost', methods=['GET', 'POST'])
+def addPost():
+    if session.get(session_username_key) == None:
+        return redirect(url_for('index'))
+    if request.method == 'GET':
+        username = session.get(session_username_key)
+        return render_template('addpost.html.j2', username)
+    else:
+        username = session.get(session_username_key)
+        inputTitle = request.values.get("title")
+        inputContent = request.values.get("content")
+        query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
+        queryVars = (username, inputTitle, inputContent)
+        cur.execute(query, queryVars)
+        conn.commit()
+        query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
+        queryVars = (inputContent, )
+        cur.execute(query, queryVars)
+        conn.commit()
     
 
 @app.route('/live', methods=['GET', 'POST'])
