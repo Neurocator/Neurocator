@@ -6,6 +6,7 @@ from flask import Flask, request, render_template, jsonify, redirect, url_for, s
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime, date, time
+from datetime import date
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -140,12 +141,13 @@ def addPost():
         cur.execute(query, queryVars)
         conn.commit()
 
-        now = datetime.timetuple()
-        tup = (now[0][0],now[0][1],now[0][2])
-        str = ''
-        for item in tup:
-            str = str + item + "-"
-        cur.execute("INSERT INTO TableName (date) VALUES(%s)", str)
+
+        date = date.today()
+        query = "INSERT INTO posts (date) VALUES (%s)"
+        queryVars = (date)
+        cur.execute(query, queryVars)
+
+        
         conn.commit()
         return redirect(url_for('forum'))
 
@@ -220,11 +222,23 @@ def complete_task(task_id):
     try:
         with sqlite3.connect('database.db') as conn:
             c = conn.cursor()
-            c.execute('DELETE FROM tasks WHERE rowid = ?', (task_id,))
+            c.execute('UPDATE tasks SET completed = NOT completed WHERE rowid = ?', (task_id,))
             conn.commit()
         return redirect(url_for('to_do_list'))
     except Exception as e:
         print(f"Error completing task {task_id}: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/delete/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    try:
+        with sqlite3.connect('database.db') as conn:
+            c = conn.cursor()
+            c.execute('DELETE FROM tasks WHERE rowid = ?', (task_id,))
+            conn.commit()
+        return redirect(url_for('to_do_list'))
+    except Exception as e:
+        print(f"Error deleting task {task_id}: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/faq')
