@@ -138,6 +138,11 @@ def addPost():
         queryVars = (username, inputTitle, inputContent)
         cur.execute(query, queryVars)
         conn.commit()
+        date = date.today()
+        query = "INSERT INTO posts (date) VALUES (%s)"
+        queryVars = (date)
+        cur.execute(query, queryVars)
+        conn.commit()
         return redirect(url_for('forum'))
 
 @app.route('/live', methods=['GET', 'POST'])
