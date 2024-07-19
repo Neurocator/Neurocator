@@ -1,5 +1,9 @@
 {% extends "base.html.j2" %}
 
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% endblock %}
+
 {% block body %}
 <style>
     body, html {
@@ -68,12 +72,12 @@
     }
 
     .team-member {
-        margin: 20px;
+        margin: 40px; /* Increased margin for larger spacing */
         text-align: center;
         color: #333;
         position: relative;
-        width: 230px;
-        height: 230px;
+        width: 250px; /* Adjusted for better fit */
+        height: 250px; /* Adjusted for better fit */
     }
 
     .team-member img {
@@ -135,89 +139,123 @@
         <h1 class="about-title">About Us</h1>
         <p class="about-text">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque rem aperiam, eaque ipsa quae.</p>
     </div>
+    
+    <!-- First Row -->
     <div class="team-container">
         <div class="team-member">
-            <img src="static/aboutus_pictures/Aanika Tangirala.png" alt="Oliver Aguilerra">
+            <img src="static/aboutus_pictures/Aanika Tangirala.png" alt="Aanika Tangirala">
             <div class="overlay">
                 <p>Phone: 123-456-7890</p>
-                <p>Email: oliver@example.com</p>
+                <p>Email: aanika@example.com</p>
             </div>
             <h3>Aanika Tangirala</h3>
             <p>Product Manager</p>
         </div>
         <div class="team-member">
-            <img src="static/aboutus_pictures/Alice Lee.png" alt="Oliver Aguilerra">
+            <img src="static/aboutus_pictures/Alice Lee.png" alt="Alice Lee">
             <div class="overlay">
                 <p>Phone: 123-456-7890</p>
-                <p>Email: oliver@example.com</p>
+                <p>Email: alice@example.com</p>
             </div>
             <h3>Alice Lee</h3>
             <p>Product Manager</p>
         </div>
         <div class="team-member">
-            <img src="static/aboutus_pictures/Brandon Kim.png" alt="Marta Clermont">
+            <img src="static/aboutus_pictures/Brandon Kim.png" alt="Brandon Kim">
             <div class="overlay">
                 <p>Phone: 234-567-8901</p>
-                <p>Email: marta@example.com</p>
+                <p>Email: brandon@example.com</p>
             </div>
             <h3>Brandon Kim</h3>
             <p>Design Team Lead</p>
         </div>
         <div class="team-member">
-            <img src="static/aboutus_pictures/Christine Ziemann.png" alt="Alice Melbourne">
+            <img src="static/aboutus_pictures/Christine Ziemann.png" alt="Christine Ziemann">
             <div class="overlay">
                 <p>Phone: 345-678-9012</p>
-                <p>Email: alice@example.com</p>
+                <p>Email: christine@example.com</p>
             </div>
             <h3>Christine Ziemann</h3>
             <p>Human Resources</p>
         </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Jasmine Chen.png" alt="John Doe">
-            <div class="overlay">
-                <p>Phone: 456-789-0123</p>
-                <p>Email: john@example.com</p>
-            </div>
-            <h3>Jasmine Chen</h3>
-            <p>Good guy</p>
-        </div>
     </div>
-    <div class="spacing"></div>
+    
+    <!-- Second Row -->
     <div class="team-container">
         <div class="team-member">
-            <img src="static/aboutus_pictures/Jasmine Seeto.png" alt="Liam Smith">
+            <img src="static/aboutus_pictures/Jasmine Chen.png" alt="Jasmine Chen">
+            <div class="overlay">
+                <p>Phone: 456-789-0123</p>
+                <p>Email: jasmine@example.com</p>
+            </div>
+            <h3>Jasmine Chen</h3>
+            <p>Good Guy</p>
+        </div>
+        <div class="team-member">
+            <img src="static/aboutus_pictures/Jasmine Seeto.png" alt="Jasmine Seeto">
             <div class="overlay">
                 <p>Phone: 567-890-1234</p>
-                <p>Email: liam@example.com</p>
+                <p>Email: jasmine.seeto@example.com</p>
             </div>
             <h3>Jasmine Seeto</h3>
             <p>Software Engineer</p>
         </div>
         <div class="team-member">
-            <img src="static/aboutus_pictures/Mark Dai.png" alt="Emma Johnson">
+            <img src="static/aboutus_pictures/Mark Dai.png" alt="Mark Dai">
             <div class="overlay">
                 <p>Phone: 678-901-2345</p>
-                <p>Email: emma@example.com</p>
+                <p>Email: mark@example.com</p>
             </div>
             <h3>Mark Dai</h3>
             <p>Marketing Specialist</p>
         </div>
         <div class="team-member">
-            <img src="static/aboutus_pictures/Stefan Popa-Bratu.png" alt="Noah Davis">
+            <img src="static/aboutus_pictures/Stefan Popa-Bratu.png" alt="Stefan Popa-Bratu">
             <div class="overlay">
                 <p>Phone: 789-012-3456</p>
-                <p>Email: noah@example.com</p>
+                <p>Email: stefan@example.com</p>
             </div>
             <h3>Stefan Popa-Bratu</h3>
             <p>UX Designer</p>
         </div>
+    </div>
+
+    <!-- Third Row -->
+    <div class="team-container">
         <div class="team-member">
-            <img src="static/aboutus_pictures/William Yang.png" alt="Sophia Martinez">
+            <img src="static/aboutus_pictures/William Yang.png" alt="William Yang">
             <div class="overlay">
                 <p>Phone: 890-123-4567</p>
-                <p>Email: sophia@example.com</p>
+                <p>Email: william@example.com</p>
             </div>
             <h3>William Yang</h3>
+            <p>Operations Manager</p>
+        </div>
+        <div class="team-member">
+            <img src="static/aboutus_pictures/Cai Zhen.png" alt="William Yang">
+            <div class="overlay">
+                <p>Phone: 890-123-4567</p>
+                <p>Email: william@example.com</p>
+            </div>
+            <h3>Cai Zhen</h3>
+            <p>Operations Manager</p>
+        </div>
+        <div class="team-member">
+            <img src="static/aboutus_pictures/Cassidy Miller.png" alt="William Yang">
+            <div class="overlay">
+                <p>Phone: 890-123-4567</p>
+                <p>Email: william@example.com</p>
+            </div>
+            <h3>Cassidy Miller</h3>
+            <p>Operations Manager</p>
+        </div>
+        <div class="team-member">
+            <img src="static/aboutus_pictures/Rishi Upadhyay.png" alt="William Yang">
+            <div class="overlay">
+                <p>Phone: 890-123-4567</p>
+                <p>Email: william@example.com</p>
+            </div>
+            <h3>Rishi Upadhaya</h3>
             <p>Operations Manager</p>
         </div>
     </div>
