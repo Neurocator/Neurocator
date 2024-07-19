@@ -96,7 +96,7 @@ def forum():
     rows = cur.fetchall()
     posts = []
     print(rows)
-    for row in rows:
+    for row in reversed(rows):
         post = {
             'id': row[0], 
             'username': row[1],
@@ -113,19 +113,22 @@ def addPost():
         return redirect(url_for('index'))
     if request.method == 'GET':
         username = session.get(session_username_key)
-        return render_template('addpost.html.j2', username)
+        return render_template('addpost.html.j2', username=username)
     else:
         username = session.get(session_username_key)
         inputTitle = request.values.get("title")
         inputContent = request.values.get("content")
+        conn = psycopg2.connect(**db_params)
+        cur = conn.cursor()
         query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
         queryVars = (username, inputTitle, inputContent)
         cur.execute(query, queryVars)
         conn.commit()
-        query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
-        queryVars = (inputContent, )
-        cur.execute(query, queryVars)
-        conn.commit()
+        #query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
+        # queryVars = (inputContent, )
+        # cur.execute(query, queryVars)
+        # conn.commit()
+        return redirect(url_for('forum'))
     
 
 @app.route('/live', methods=['GET', 'POST'])

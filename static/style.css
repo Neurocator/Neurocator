@@ -11,7 +11,10 @@
     background-color: #ba80c4;
 }
 
-.logout-button:hover {
+.logout-button:hover-border {
     background-color: #ae59bd;
 }
 
+.nav-outline:hover {
+    color: #ba80c4;
+}

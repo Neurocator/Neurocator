@@ -1,6 +1,20 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
+
+<div class="mb-16">
+    <div class="banner">
+        <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
+                <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+                    Live Assistance Tool
+                </h1>
+                    <h1 class="h1">Prepare, plan, and track your lessons in real-time!</h1>
+                <p class="text-base text-gray-700 md:text-lg"></p>
+            </div>
+        </div>
+    </div>
+
 <div class="container" id="mainContainer">
     <h1>Lecture Tracker</h1>
 
@@ -210,7 +224,7 @@
         margin: 50px auto;
         padding: 20px;
         border-radius: 20px;
-        background-color: #B0D39B;
+        background-color: #ba80c4;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
@@ -243,15 +257,15 @@
     }
     .btn-add {
         padding: 10px 20px;
-        background-color: #8bb3db;
+        background-color: #b0d39b;
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        color: white;
+        color: black;
         font-size: 1em;
     }
     .btn-add:hover {
-        background-color: #7990a9;
+        background-color: #a1c888;
     }
     .list-container {
         width: 100%;
@@ -335,6 +349,17 @@
         display: flex;
         align-items: center;
         margin-left: auto;
+    }
+
+    .banner {
+        background-color: #B0D39B;
+    }
+
+.h1 {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 30px;
+    color: #ba80c4;
     }
 </style>
 {% endblock %}

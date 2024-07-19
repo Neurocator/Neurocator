@@ -203,23 +203,23 @@
                     </form>
                 `;
                 if (taskList.children.length < 8) {
-                    taskList.appendChild(li);
-                } else {
-                    additionalTaskList.appendChild(li);
-                }
+    taskList.appendChild(li);
+} else {
+    additionalTaskList.appendChild(li);
+}
 
-                taskInput.value = ''; // Clear the input field
-                taskInput.focus(); // Refocus the input field
-            }
-        });
+taskInput.value = ''; // Clear the input field
+taskInput.focus(); // Refocus the input field
+});
 
-        document.getElementById('taskInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                e.preventDefault(); // Prevent form from submitting the traditional way
-                document.getElementById('taskForm').submit(); // Submit the form programmatically
-            }
-        });
-    </script>
+// Handle Enter key press on task input to submit the form
+document.getElementById('taskInput').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault(); // Prevent the default form submission
+        document.getElementById('taskForm').submit(); // Submit the form programmatically
+    }
+});
+</script>
 </body>
 </html>
 {% endblock %}
