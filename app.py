@@ -93,7 +93,17 @@ def forum():
     query = "SELECT id, username, title, content, date FROM posts"
     cur.execute(query)
     conn.commit()
-    posts = cur.fetchall()
+    rows = cur.fetchall()
+    posts = []
+    for row in rows:
+        post = {
+            'id': row[0], 
+            'username': row[1],
+            'title': row[2],
+            'content': row[3],
+            'date': row[4]
+        }
+    posts.append(post)
     print(posts)
     return render_template('forum.html.j2', posts=posts)
 
