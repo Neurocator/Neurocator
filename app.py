@@ -136,16 +136,12 @@ def addPost():
         inputContent = request.values.get("content")
         conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
-        query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-        queryVars = (username, inputTitle, inputContent)
+        now = datetime.now()
+        date_str = now.strftime("%Y-%m-%d")  # format the date as YYYY-MM-DD
+        query = "INSERT INTO posts (username, title, content, date) VALUES (%s, %s, %s, %s)"
+        queryVars = (username, inputTitle, inputContent, (date_str,))
         cur.execute(query, queryVars)
         conn.commit()
-
-
-        now = datetime.datetime.now()
-        date_str = now.strftime("%Y-%m-%d")  # format the date as YYYY-MM-DD
-        cur.execute("INSERT INTO TableName (date) VALUES (%s)", (date_str,))
-
 
         conn.commit()
         return redirect(url_for('forum'))
