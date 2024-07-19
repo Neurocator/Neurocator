@@ -45,6 +45,7 @@ function createResourceItem(group, link, title, description) {
 
 // Example usage
 const resources = [
+    
     {
         group: 'Mental Health',
         link: 'https://www.samhsa.gov/find-help/national-helpline',
