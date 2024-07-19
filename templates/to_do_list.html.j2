@@ -197,7 +197,7 @@
             if (task) {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <form action="/complete/" method="POST" style="display: flex; align-items: center;">
+                    <form action="/complete/${task.id}" method="POST" style="display: flex; align-items: center;">
                         <input type="checkbox" onclick="this.form.submit()">
                         <span style="flex-grow: 1;">${task}</span>
                     </form>
@@ -214,13 +214,13 @@
         });
 
         // Handle Enter key press on task input to submit the form
-document.getElementById('taskInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent the default form submission
-        document.getElementById('taskForm').submit(); // Submit the form programmatically
-    }
-});
-</script>
+        document.getElementById('taskInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Prevent the default form submission
+                document.getElementById('taskForm').submit(); // Submit the form programmatically
+            }
+        });
+    </script>
 </body>
 </html>
 {% endblock %}
