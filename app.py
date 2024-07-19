@@ -68,6 +68,7 @@ def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
     query = "SELECT password FROM users WHERE username=%s"
+    
     cur.execute(query, (inputUsername,))
     conn.commit()
     results = cur.fetchall()
@@ -87,12 +88,11 @@ def home():
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
-    cur = conn.cursor()
-    query = "SELECT id, username, title, content, date FROM forum_posts ORDER BY date DESC"
+    query = "SELECT id, username, title, content, date FROM posts"
     cur.execute(query)
+    conn.commit()
     posts = cur.fetchall()
-    cur.close()
-    conn.close()
+    print(posts)
     return render_template('forum.html.j2', posts=posts)
 
 # @app.route('/addpost', methods=['GET', 'POST'])
