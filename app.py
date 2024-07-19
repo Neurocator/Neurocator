@@ -68,7 +68,7 @@ def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
     query = "SELECT password FROM users WHERE username=%s"
-    
+
     cur.execute(query, (inputUsername,))
     conn.commit()
     results = cur.fetchall()
@@ -88,6 +88,8 @@ def home():
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
     query = "SELECT id, username, title, content, date FROM posts"
     cur.execute(query)
     conn.commit()
