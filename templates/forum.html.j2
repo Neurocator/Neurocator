@@ -3,7 +3,20 @@
 {% block body %}
 <!DOCTYPE html>
 
-<h1>Welcome to the forum! Post and connect with other neurodiverse teachers!</h1>
+<div class="mb-16">
+  <div class="banner">
+    <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+      <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
+        <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+          Welcome to the forum!
+        </h1>
+        <p class="text-base text-gray-700 md:text-lg">
+        </p>
+      </div>
+    </div>
+  </div>
+
+<h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
 
 <div class="posts">
 <h2>Recent Posts!</h2>
@@ -19,5 +32,47 @@
 <p>There are no posts yet! Add the first one here: <a href="/addpost">Add a New Post</a></p>
 {% endif %}
 </div>
+
+<style>
+h1.textstyle {
+    font-family: 'OpenDyslexic', sans-serif;
+  }
+
+.h1 {
+    text-align: center;
+    padding-top: 10px;
+    font-size: 20px;
+    color: #ba80c4;
+  }
+
+body {
+    font-family: 'OpenDyslexic', sans-serif;
+    background-color: #f0e3ce;
+  }
+
+.banner {
+    background-color: #B0D39B;
+  }
+
+.bg-brand-primary {
+    background-color: #ba80c4;
+  }
+
+.text-brand-primary {
+    color: #8fac7d;
+  }
+
+.group-button.active {
+    border: 2px solid #B0D39B;
+  }
+
+.resource-card:hover {
+    background-color: #f6efe6;
+  }
+
+.border-2.border-black {
+    border: 2px solid black;
+  }
+</style>
 
 {% endblock %}
