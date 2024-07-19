@@ -5,6 +5,7 @@ import sqlite3
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime, date, time
 from datetime import date
 
 # Set up logging
@@ -135,14 +136,13 @@ def addPost():
         inputContent = request.values.get("content")
         conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
-        query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-        queryVars = (username, inputTitle, inputContent)
+        now = datetime.now()
+        date_str = now.strftime("%Y-%m-%d")  # format the date as YYYY-MM-DD
+        query = "INSERT INTO posts (username, title, content, date) VALUES (%s, %s, %s, %s)"
+        queryVars = (username, inputTitle, inputContent, (date_str,))
         cur.execute(query, queryVars)
         conn.commit()
-        date_today = date.today()
-        query = "UPDATE posts SET date=%s WHERE id = %s"
-        queryVars = (date_today, cur.lastrowid)
-        cur.execute(query, queryVars)
+
         conn.commit()
         return redirect(url_for('forum'))
 
