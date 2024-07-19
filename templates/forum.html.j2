@@ -13,18 +13,17 @@
                 <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
                     Welcome to the forum!
                 </h1>
+                    <h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
                 <p class="text-base text-gray-700 md:text-lg"></p>
             </div>
         </div>
     </div>
 
-    <h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
-
-    <div class="posts">
-        <h2>Recent Posts!</h2>
+    <div>
+        <h2 class="h2">Recent Posts</h2>
         {% if posts|length %}
             {% for post in posts %}
-                <div class="individual-post">
+                <div class="individual-post gap-8">
                     <p class="post-info">Posted by {{ post['username'] }} on {{ post['date'] }}</p>
                     <p class="post-title">{{ post['title'] }}</p>
                     <p class="post-content">{{ post['content'] }}</p>
@@ -34,7 +33,6 @@
             <p>There are no posts yet! Add the first one here: <a href="/addpost" class="add-post-link">Add a New Post</a></p>
         {% endif %}
     </div>
-</div>
 
 <a href="addpost">
     <div>
@@ -53,9 +51,14 @@ h1.textstyle {
 .h1 {
     text-align: center;
     padding-top: 20px;
-    font-size: 35px;
+    font-size: 30px;
     color: #ba80c4;
   }
+
+.h2 {
+    font-size: 30px;
+    padding-top: 20px;
+}
 
 body {
     font-family: 'OpenDyslexic', sans-serif;
@@ -86,13 +89,6 @@ body {
         border: 2px solid black;
     }
 
-    h1.h1 {
-        text-align: center;
-        padding-top: 10px;
-        font-size: 20px;
-        color: #ba80c4;
-    }
-
     h2 {
         text-align: center;
         font-size: 1.75rem;
@@ -104,14 +100,22 @@ body {
         max-width: 800px;
         margin: 0 auto;
         padding: 20px;
+        padding-bottom: 30px;
+        gap: 20px;
         background-color: #fff;
         border-radius: 10px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .individual-post {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 20px;
         border-bottom: 1px solid #ddd;
+        padding-bottom: 50px;
     }
 
     .individual-post:last-child {

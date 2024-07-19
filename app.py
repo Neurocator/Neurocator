@@ -95,6 +95,7 @@ def forum():
     conn.commit()
     rows = cur.fetchall()
     posts = []
+    print(rows)
     for row in rows:
         post = {
             'id': row[0], 
@@ -103,8 +104,7 @@ def forum():
             'content': row[3],
             'date': row[4]
         }
-    posts.append(post)
-    print(posts)
+        posts.append(post)
     return render_template('forum.html.j2', posts=posts)
 
 @app.route('/addpost', methods=['GET', 'POST'])
