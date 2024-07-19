@@ -1,78 +1,129 @@
 {% extends "base.html.j2" %}
 
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% endblock %}
+
 {% block body %}
-<!DOCTYPE html>
-
+<!-- Main Content -->
 <div class="mb-16">
-  <div class="banner">
-    <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-      <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
-        <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
-          Welcome to the forum!
-        </h1>
-        <p class="text-base text-gray-700 md:text-lg">
-        </p>
-      </div>
-    </div>
-  </div>
-
-<h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
-
-<div class="posts">
-<h2>Recent Posts!</h2>
-{% if posts|length %}
-    {% for post in posts %}
-            <div class="individual-post">
-                <p>Posted by {{ post['username'] }} on {{ post['date'] }}</p>
-                <p>{{ post['title'] }}</p>
-                <p>{{ post['content'] }}</p>
+    <div class="banner">
+        <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
+                <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+                    Welcome to the forum!
+                </h1>
+                <p class="text-base text-gray-700 md:text-lg"></p>
             </div>
-    {% endfor %}
-{% else %}
-<p>There are no posts yet! Add the first one here: <a href="/addpost">Add a New Post</a></p>
-{% endif %}
+        </div>
+    </div>
+
+    <h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
+
+    <div class="posts">
+        <h2>Recent Posts!</h2>
+        {% if posts|length %}
+            {% for post in posts %}
+                <div class="individual-post">
+                    <p class="post-info">Posted by {{ post['username'] }} on {{ post['date'] }}</p>
+                    <p class="post-title">{{ post['title'] }}</p>
+                    <p class="post-content">{{ post['content'] }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>There are no posts yet! Add the first one here: <a href="/addpost" class="add-post-link">Add a New Post</a></p>
+        {% endif %}
+    </div>
 </div>
 
 <style>
-h1.textstyle {
-    font-family: 'OpenDyslexic', sans-serif;
-  }
+    body {
+        font-family: 'OpenDyslexic', sans-serif;
+        background-color: #f0e3ce;
+    }
 
-.h1 {
-    text-align: center;
-    padding-top: 10px;
-    font-size: 20px;
-    color: #ba80c4;
-  }
+    .banner {
+        background-color: #B0D39B;
+    }
 
-body {
-    font-family: 'OpenDyslexic', sans-serif;
-    background-color: #f0e3ce;
-  }
+    .bg-brand-primary {
+        background-color: #ba80c4;
+    }
 
-.banner {
-    background-color: #B0D39B;
-  }
+    .text-brand-primary {
+        color: #8fac7d;
+    }
 
-.bg-brand-primary {
-    background-color: #ba80c4;
-  }
+    .group-button.active {
+        border: 2px solid #B0D39B;
+    }
 
-.text-brand-primary {
-    color: #8fac7d;
-  }
+    .resource-card:hover {
+        background-color: #f6efe6;
+    }
 
-.group-button.active {
-    border: 2px solid #B0D39B;
-  }
+    .border-2.border-black {
+        border: 2px solid black;
+    }
 
-.resource-card:hover {
-    background-color: #f6efe6;
-  }
+    h1.h1 {
+        text-align: center;
+        padding-top: 10px;
+        font-size: 20px;
+        color: #ba80c4;
+    }
 
-.border-2.border-black {
-    border: 2px solid black;
-  }
+    h2 {
+        text-align: center;
+        font-size: 1.75rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .posts {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .individual-post {
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .individual-post:last-child {
+        border-bottom: none;
+    }
+
+    .post-info {
+        font-size: 0.875rem;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .post-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .add-post-link {
+        color: #ba80c4;
+        text-decoration: underline;
+    }
+
+    .add-post-link:hover {
+        text-decoration: none;
+    }
 </style>
 
 {% endblock %}
