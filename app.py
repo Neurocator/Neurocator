@@ -142,12 +142,11 @@ def addPost():
         conn.commit()
 
 
-        date = date.today()
-        query = "INSERT INTO posts (date) VALUES (%s)"
-        queryVars = (date)
-        cur.execute(query, queryVars)
+        now = datetime.datetime.now()
+        date_str = now.strftime("%Y-%m-%d")  # format the date as YYYY-MM-DD
+        cur.execute("INSERT INTO TableName (date) VALUES (%s)", (date_str,))
 
-        
+
         conn.commit()
         return redirect(url_for('forum'))
 
