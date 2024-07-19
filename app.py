@@ -1,7 +1,6 @@
 import os
 import psycopg2
 import logging
-import sqlite3
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -19,16 +18,22 @@ db_params = {
     'sslmode': 'require'
 }
 
-conn = psycopg2.connect(**db_params)
-cur = conn.cursor()
+def get_db_connection():
+    conn = psycopg2.connect(**db_params)
+    return conn
 
-# Utility functions
-def is_point_covered(transcript_tokens, point_text):
-    return point_text.lower() in transcript_tokens
-
-def process_transcript(transcript):
-    return transcript.split()
-
+def init_db():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tasks (
+            id SERIAL PRIMARY KEY,
+            task TEXT NOT NULL,
+            completed BOOLEAN NOT NULL DEFAULT FALSE
+        )
+    ''')
+    conn.commit()
+    conn.close()
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -36,6 +41,18 @@ CORS(app)
 
 session_username_key = 'neurocator_username'
 app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
+
+# Initialize the database
+@app.before_first_request
+def initialize():
+    init_db()
+
+# Utility functions
+def is_point_covered(transcript_tokens, point_text):
+    return point_text.lower() in transcript_tokens
+
+def process_transcript(transcript):
+    return transcript.split()
 
 @app.route('/', methods=['GET'])
 def index():
@@ -52,15 +69,18 @@ def signUp():
         userTypedPassword = request.values.get("password")
         securedPassword = generate_password_hash(userTypedPassword)
         query = "SELECT username FROM users WHERE username=%s"
+        conn = get_db_connection()
+        cur = conn.cursor()
         cur.execute(query, (inputUsername,))
-        conn.commit()
         results = cur.fetchall()
         if len(results) == 1:
+            conn.close()
             return redirect(url_for('signUp', usernameTaken=True))
         else:
             query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
             cur.execute(query, (inputEmail, inputUsername, securedPassword))
             conn.commit()
+            conn.close()
             return redirect(url_for('index'))
 
 @app.route('/checklogin', methods=['POST'])
@@ -68,18 +88,20 @@ def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
     query = "SELECT password FROM users WHERE username=%s"
-
+    conn = get_db_connection()
+    cur = conn.cursor()
     cur.execute(query, (inputUsername,))
-    conn.commit()
     results = cur.fetchall()
     if len(results) == 1:
         hashedPassword = results[0][0]
+        conn.close()
         if check_password_hash(hashedPassword, inputPassword):
             session[session_username_key] = inputUsername
             return redirect(url_for('home'))
         else:
             return redirect(url_for('index', incorrectLoginError=True))
     else:
+        conn.close()
         return redirect(url_for('index', incorrectLoginError=True))
 
 @app.route('/home', methods=['GET', 'POST'])
@@ -88,14 +110,12 @@ def home():
 
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cur = conn.cursor()
     query = "SELECT id, username, title, content, date FROM posts"
     cur.execute(query)
-    conn.commit()
     rows = cur.fetchall()
     posts = []
-    print(rows)
     for row in reversed(rows):
         post = {
             'id': row[0], 
@@ -105,11 +125,12 @@ def forum():
             'date': row[4]
         }
         posts.append(post)
+    conn.close()
     return render_template('forum.html.j2', posts=posts)
 
 @app.route('/addpost', methods=['GET', 'POST'])
 def addPost():
-    if session.get(session_username_key) == None:
+    if session.get(session_username_key) is None:
         return redirect(url_for('index'))
     if request.method == 'GET':
         username = session.get(session_username_key)
@@ -118,16 +139,12 @@ def addPost():
         username = session.get(session_username_key)
         inputTitle = request.values.get("title")
         inputContent = request.values.get("content")
-        conn = psycopg2.connect(**db_params)
+        conn = get_db_connection()
         cur = conn.cursor()
         query = "INSERT INTO posts (username, title, content) VALUES (%s, %s, %s)"
-        queryVars = (username, inputTitle, inputContent)
-        cur.execute(query, queryVars)
+        cur.execute(query, (username, inputTitle, inputContent))
         conn.commit()
-        #query = "INSERT INTO posts (date) VALUES (TIMESTAMP(NOW())) WHERE content=%s"
-        # queryVars = (inputContent, )
-        # cur.execute(query, queryVars)
-        # conn.commit()
+        conn.close()
         return redirect(url_for('forum'))
     
 
@@ -158,7 +175,7 @@ def transcribe():
                 print(f"Point '{point['text']}' covered")
 
             for subpoint in point.get('subpoints', []):
-                if not subpoint['covered'] and is_point_covered(transcript_tokens, subpoint['text']):
+                if not subpoint['covered'] and is_point_covered(transcript_tokens, subpoint['text']]):
                     subpoint['covered'] = True
                     print(f"Subpoint '{subpoint['text']}' covered")
 
@@ -183,27 +200,29 @@ def about():
 def to_do_list():
     if request.method == 'POST':
         task = request.form['task']
-        with sqlite3.connect('database.db') as conn:
-            c = conn.cursor()
-            c.execute('INSERT INTO tasks (task, completed) VALUES (?, ?)', (task, False))
-            conn.commit()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('INSERT INTO tasks (task, completed) VALUES (%s, %s)', (task, False))
+        conn.commit()
+        conn.close()
         return redirect(url_for('to_do_list'))
     
-    with sqlite3.connect('database.db') as conn:
-        c = conn.cursor()
-        c.execute('SELECT rowid, task, completed FROM tasks')
-        tasks = [(rowid, task, completed) for rowid, task, completed in c.fetchall()]
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('SELECT id, task, completed FROM tasks')
+    tasks = [(id, task, completed) for id, task, completed in cur.fetchall()]
+    conn.close()
     
-    print(f"Tasks: {tasks}")  # Debug output
     return render_template('to_do_list.html.j2', tasks=tasks)
 
 @app.route('/complete/<int:task_id>', methods=['POST'])
 def complete_task(task_id):
     try:
-        with sqlite3.connect('database.db') as conn:
-            c = conn.cursor()
-            c.execute('DELETE FROM tasks WHERE rowid = ?', (task_id,))
-            conn.commit()
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute('DELETE FROM tasks WHERE id = %s', (task_id,))
+        conn.commit()
+        conn.close()
         return redirect(url_for('to_do_list'))
     except Exception as e:
         print(f"Error completing task {task_id}: {e}")
@@ -220,11 +239,10 @@ def download(filename):
 
 # general server-side validation 
 def serverSideValidation(inputs):
+    validated = True
     for input in inputs:
-        if (len(request.values.get(input)) == 0):
+        if len(request.values.get(input)) == 0:
             validated = False
-        else:
-            validated = True
     return validated
 
 if __name__ == '__main__':
