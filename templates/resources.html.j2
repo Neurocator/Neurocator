@@ -24,7 +24,186 @@
       }
     });
   });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const resourceContainer = document.getElementById('resource-container');
+
+    const resources = [
+      {
+        group: 'Mental Health',
+        link: 'https://www.samhsa.gov/find-help/national-helpline',
+        title: 'SAMHSA’s National Helpline (1-800-662-4357)',
+        description: 'A confidential, free, 24/7 service for individuals and families facing mental and substance use disorders.'
+      },
+      {
+        group: 'Mental Health',
+        link: 'https://988lifeline.org/',
+        title: '988 Suicide and Crisis Lifeline',
+        description: 'Provides 24/7, confidential support for people in distress, as well as prevention and crisis resources.'
+      },
+      {
+        group: 'Mental Health',
+        link: 'https://www.cdc.gov/mentalhealth/cope-with-stress/index.html?CDC_AA_refVal=https%3A%2F%2Fwww.cdc.gov%2Fmentalhealth%2Fstress-coping%2Findex.html',
+        title: 'Coping with Stress (CDC)',
+        description: 'Offers strategies and resources for managing stress and improving mental health.'
+      },
+      {
+        group: 'Mental Health',
+        link: 'https://www.nami.org/about-nami/',
+        title: 'National Alliance on Mental Illness (NAMI)',
+        description: 'Provides education, support, and advocacy for individuals affected by mental illness.'
+      },
+      {
+        group: 'ADHD',
+        link: 'https://chadd.org/',
+        title: 'CHADD',
+        description: 'Children and Adults with Attention-Deficit/Hyperactivity Disorder (CHADD) is the leading non-profit organization providing support, education, and advocacy for individuals with ADHD.'
+      },
+      {
+        group: 'ADHD',
+        link: 'https://add.org/start/adda-resources/',
+        title: 'Attention Deficit Disorder Association (ADDA)',
+        description: 'The world\'s leading adult ADHD organization providing information, resources, and networking opportunities.'
+      },
+      {
+        group: 'ADHD',
+        link: 'https://github.com/XargsUK/awesome-adhd',
+        title: 'Awesome ADHD',
+        description: 'A curated list of ADHD apps, books, ideas, and resources across the web.'
+      },
+      {
+        group: 'Autism',
+        link: 'https://autisticadvocacy.org/',
+        title: 'Autistic Self Advocacy Network (ASAN)',
+        description: 'Run by and for autistic people, providing support, community, and advocacy.'
+      },
+      {
+        group: 'Autism',
+        link: 'https://awnnetwork.org/about/',
+        title: 'Autistic Women & Nonbinary Network (AWN)',
+        description: 'Supports and advocates for autistic women, girls, and nonbinary individuals.'
+      },
+      {
+        group: 'Autism',
+        link: 'https://a4aontario.com/about/',
+        title: 'Autistics for Autistics (A4A Ontario)',
+        description: 'A self-advocacy group by and for autistic adults in Ontario, Canada.'
+      },
+      {
+        group: 'Autism',
+        link: 'https://aaspire.org/',
+        title: 'AASPIRE',
+        description: 'Academic Autism Spectrum Partnership in Research and Education (AASPIRE) conducts research for the benefit of the autistic community.'
+      },
+      {
+        group: 'Dyslexia',
+        link: 'https://www.cde.ca.gov/ci/cr/dy/',
+        title: 'Dyslexia - Curriculum and Instruction Resources (CA Dept of Education)',
+        description: 'Provides resources and guidelines for educators to support students with dyslexia.'
+      },
+      {
+        group: 'Dyslexia',
+        link: 'https://ksmo.dyslexiaida.org/teacher-resources/',
+        title: 'International Dyslexia Association',
+        description: 'Promotes effective teaching approaches and related clinical educational intervention strategies for dyslexia.'
+      },
+      {
+        group: 'Dyslexia',
+        link: 'https://www.chconline.org/resourcelibrary/understanding-dyslexia/?utm_source=google_cpc&utm_medium=paid_search&utm_campaign=dsa&utm_term=&gad_source=1&gclid=CjwKCAjwtNi0BhA1EiwAWZaANNjGzJff96LK7I4K1BuqnVBU02LOfV1f7GJinn-4WPhCGkao58wFpRoCWI8QAvD_BwE',
+        title: 'Children\'s Health Council - Understanding Dyslexia',
+        description: 'Offers resources to help understand and manage dyslexia in children.'
+      },
+      {
+        group: 'Dyslexia',
+        link: 'https://opendyslexic.org/',
+        title: 'OpenDyslexic Font',
+        description: 'A free typeface designed to increase readability for readers with dyslexia.'
+      },
+      {
+        group: 'Self-Advocacy',
+        link: 'https://nacdd.org/self-advocacy-resources/',
+        title: 'NACDD (National Association of Councils on Developmental Disabilities)',
+        description: 'Advocates for inclusive federal and state public policies for people with developmental disabilities.'
+      },
+      {
+        group: 'Self-Advocacy',
+        link: 'https://selfadvocacyinfo.org/',
+        title: 'SARTAC (Self Advocacy Resource and Technical Assistance Center)',
+        description: 'Empowers individuals with disabilities to become effective self-advocates through resources and training.'
+      },
+      {
+        group: 'Self-Advocacy',
+        link: 'https://thearc.org/get-involved/self-advocacy/',
+        title: 'The Arc - Self Advocacy Resources',
+        description: 'Provides tools and information for self-advocates to help them understand and protect their rights.'
+      },
+      {
+        group: 'Self-Advocacy',
+        link: 'https://disabledteachersnetwork.weebly.com/uploads/9/8/7/7/9877420/pdf.pdf',
+        title: 'Disability Rights California',
+        description: 'Protects and advocates for the rights of Californians with disabilities.'
+      },
+      {
+        group: 'Organization',
+        link: 'https://www.theanimatedteacherblog.com/organizational-items-for-teachers/',
+        title: '20 best organizational items for teachers',
+        description: 'Helpful organizational items for teachers to improve classroom management.'
+      },
+      {
+        group: 'Organization',
+        link: 'https://www.fullspedahead.com/teacher-organization/',
+        title: 'Teacher Organization Tips as a Special Ed Teacher',
+        description: 'Tips and strategies for special ed teachers to stay organized.'
+      },
+      {
+        group: 'Organization',
+        link: 'https://blog.prepscholar.com/teaching-tools-aids',
+        title: '17 Great Teaching Tools for Organization, Assessment and More',
+        description: 'Comprehensive list of teaching tools for better organization and assessment.'
+      }
+    ];
+
+    resources.forEach(resource => {
+      const resourceItem = createResourceItem(resource.group, resource.link, resource.title, resource.description);
+      resourceContainer.appendChild(resourceItem);
+    });
+  });
+
+  function createResourceItem(group, link, title, description) {
+    const resourceItem = document.createElement('div');
+    resourceItem.className = 'resource-item';
+    resourceItem.setAttribute('data-group', group);
+
+    const anchor = document.createElement('a');
+    anchor.href = link;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+
+    const resourceCard = document.createElement('div');
+    resourceCard.className = 'resource-card p-6 bg-gray-100 rounded-lg shadow-lg';
+
+    const titleElement = document.createElement('h2');
+    titleElement.className = 'mb-4 text-xl font-bold';
+    titleElement.textContent = title;
+    resourceCard.appendChild(titleElement);
+
+    const descriptionElement = document.createElement('p');
+    descriptionElement.className = 'mb-4';
+    descriptionElement.textContent = description;
+    resourceCard.appendChild(descriptionElement);
+
+    const visitSiteText = document.createElement('p');
+    visitSiteText.className = 'text-brand-primary hover:underline';
+    visitSiteText.textContent = 'Visit Site';
+    resourceCard.appendChild(visitSiteText);
+
+        anchor.appendChild(resourceCard);
+    resourceItem.appendChild(anchor);
+
+    return resourceItem;
+  }
 </script>
+
 <div class="mb-16">
   <div class="banner">
     <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
@@ -33,6 +212,9 @@
           Resources
         </h1>
         <p class="text-base text-gray-700 md:text-lg">
+          Attention-deficit/hyperactivity disorder (ADHD) is a neurodevelopmental disorder affecting 11 percent of
+          school-age children. Symptoms continue into adulthood in more than three-quarters of cases.
+          ADHD is characterized by developmentally inappropriate levels of inattention, impulsivity, and hyperactivity.
         </p>
       </div>
     </div>
@@ -50,32 +232,8 @@
         <button data-group="Organization" class="group-button mx-2 my-2 px-4 py-2 bg-brand-primary text-white rounded">Organization</button>
       </div>
 
-      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        <!-- Infographic Resource -->
-        <div class="resource-item" data-group="Infographics">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Overview of Neurodiversity</h2>
-            <p class="mb-4">Download our infographic to see the overview of Neurodiversity.</p>
-            <a href="static/files/article/neurodiversity-overview.jpg" class="text-brand-primary hover:underline">Download Infographic</a>
-          </div>
-        </div>
-        
-        <!-- PDF Resources -->
-        <div class="resource-item" data-group="Articles">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Understanding ADHD</h2>
-            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-            <a href="/download/understanding-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-          </div>
-        </div>
-        
-        <div class="resource-item" data-group="Articles">
-          <div class="resource-card p-6 bg-gray-100 rounded-lg shadow-lg">
-            <h2 class="mb-4 text-xl font-bold">Living with ADHD</h2>
-            <p class="mb-4">A comprehensive guide to understanding ADHD, its symptoms, and treatment options.</p>
-            <a href="/download/living-with-adhd.pdf" class="text-brand-primary hover:underline">Download PDF</a>
-          </div>
-        </div>
+      <div id="resource-container" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- Resource items will be dynamically inserted here -->
       </div>
     </div>
   </div>
