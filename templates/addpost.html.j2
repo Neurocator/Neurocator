@@ -26,19 +26,10 @@
                 <label for="title">Title</label>
                 <input type="text" id="title" name="title" placeholder="Enter your Post Title" required>
             </div>
-            <div className="flex flex-col">
-                <Label className="content">Content:</Label>
-                <div
-                    contentEditable="true"
-                    className="editable-div overflow-auto break-words p-2 border border-gray-300 rounded "
-                    placeholder="Describe your desired feature. Be descriptive!"
-                    role="textbox"
-                    aria-multiline="true"
-                ></div>
-            {# <div class="">
+            <div class="">
                 <label for="content">Content</label>
                 <input type="text" id="content" name="content" placeholder="Enter your Post Content" required>
-            </div> #}
+            </div>
             <div>
                 <button type="submit" class="submit-button">Submit!</button>
             </div>
@@ -80,9 +71,13 @@
         color: #555;
     }
 
-    input{
-        background-color: white;
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
         border: 1px solid #ddd;
+        border-radius: 5px;
+        box-sizing: border-box;
         text-wrap: pretty;
     }
 

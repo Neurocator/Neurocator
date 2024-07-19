@@ -20,7 +20,7 @@
     </div>
 
     <div>
-        <h2 class="h2">Recent Posts</h2>
+        <h2 class="recentposts">Recent Posts</h2>
         {% if posts|length %}
             {% for post in posts %}
                 <div class="individual-post gap-8">
@@ -36,6 +36,7 @@
 
 <a href="addpost">
     <div>
+        <h2 class="h2">Add new post:</h2>
         <button type="submit" class="addpostbutton">
         <img src="static\newpost.png" alt="newpost" />
         </button>
@@ -56,6 +57,14 @@ h1.textstyle {
   }
 
 .h2 {
+    text-align: right;
+    position: fixed;
+    bottom: 60;
+    right: 20;
+    font-size: 20px;
+}
+
+.recentposts {
     font-size: 30px;
     padding-top: 20px;
 }
@@ -129,7 +138,14 @@ body {
         width: 100px;
         position: fixed;
         bottom: 0;
-        right: 0;
+        right: 30;
+    }
+
+    .addpost {
+        position: fixed;
+        bottom: 0;
+        right: 25;
+        text-align: right;
     }
 
     .post-info {

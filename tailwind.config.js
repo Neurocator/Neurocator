@@ -15,13 +15,8 @@ module.exports = {
              'secondary': '#82C3E0',
              'tertiary': '#496A79',
              'background': '#f4ece5',
+             'purple': '#ae59bd',
           },
-        
-          brand2: {
-            'primary': '#C2DEA8',
-            'secondary': '#90B270',
-            'tertiary': '#5F8356',
-         },
   
           red: {
             '50': '#ffebee',
