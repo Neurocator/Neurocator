@@ -217,11 +217,23 @@ def complete_task(task_id):
     try:
         with sqlite3.connect('database.db') as conn:
             c = conn.cursor()
-            c.execute('DELETE FROM tasks WHERE rowid = ?', (task_id,))
+            c.execute('UPDATE tasks SET completed = NOT completed WHERE rowid = ?', (task_id,))
             conn.commit()
         return redirect(url_for('to_do_list'))
     except Exception as e:
         print(f"Error completing task {task_id}: {e}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/delete/<int:task_id>', methods=['POST'])
+def delete_task(task_id):
+    try:
+        with sqlite3.connect('database.db') as conn:
+            c = conn.cursor()
+            c.execute('DELETE FROM tasks WHERE rowid = ?', (task_id,))
+            conn.commit()
+        return redirect(url_for('to_do_list'))
+    except Exception as e:
+        print(f"Error deleting task {task_id}: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/faq')
