@@ -207,116 +207,13 @@
         color: #888;
     }
 
-        .complete-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            padding: 2px 6px;
-        }
-
-        .banner {
-            background-color: #B0D39B;
-        }
-
-        .h1 {
-            text-align: center;
-            padding-top: 20px;
-            font-size: 30px;
-            color: #ba80c4;
-        }
-    </style>
-</head>
-
-<body>
-<div class="mb-16">
-    <div class="banner">
-        <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-            <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
-                <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
-                    To-Do List
-                </h1>
-                    <h1 class="h1">Keep track of any task with this interactive to-do list!</h1>
-                <p class="text-base text-gray-700 md:text-lg"></p>
-            </div>
-        </div>
-    </div>
-    <div class="bg-img" id="backgroundImage"></div>
-    <div class="content">
-        <div class="container">
-            <div class="list-container">
-                <h1>Make To-Do List</h1>
-                <form action="/todo" method="POST" id="taskForm">
-                    <input type="text" name="task" placeholder="Insert Task" id="taskInput" required>
-                    <input type="submit" value="Add">
-                </form>
-                <ul id="taskList">
-                    {% for task in tasks %}
-                    {% if loop.index <= 8 %}
-                    <li class="{{ 'completed' if task[2] else '' }}">
-                        <form action="/complete/{{ task[0] }}" method="POST" style="display: flex; align-items: center;">
-                            <input type="checkbox" onclick="this.form.submit()" {{ 'checked' if task[2] else '' }}>
-                            <span style="flex-grow: 1;">{{ task[1] }}</span>
-                        </form>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            {% if tasks|length > 8 %}
-            <div class="list-container">
-                <h1>Continued</h1>
-                <ul id="additionalTaskList">
-                    {% for task in tasks[8:] %}
-                    <li class="{{ 'completed' if task[2] else '' }}">
-                        <form action="/complete/{{ task[0] }}" method="POST" style="display: flex; align-items: center;">
-                            <input type="checkbox" onclick="this.form.submit()" {{ 'checked' if task[2] else '' }}>
-                            <span style="flex-grow: 1;">{{ task[1] }}</span>
-                        </form>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    <script>
-        // JavaScript to submit form on Enter key press and refocus input
-        document.getElementById('taskForm').addEventListener('submit', function (e) {
-            e.preventDefault(); // Prevent form from submitting the traditional way
-            const taskInput = document.getElementById('taskInput');
-            const taskList = document.getElementById('taskList');
-            const additionalTaskList = document.getElementById('additionalTaskList');
-
-            const task = taskInput.value;
-            if (task) {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <form action="/complete/" method="POST" style="display: flex; align-items: center;">
-                        <input type="checkbox" onclick="this.form.submit()">
-                        <span style="flex-grow: 1;">${task}</span>
-                    </form>
-                `;
-                if (taskList.children.length < 8) {
-                    taskList.appendChild(li);
-                } else {
-                    additionalTaskList.appendChild(li);
-                }
-
-                taskInput.value = ''; // Clear the input field
-                taskInput.focus(); // Refocus the input field
-            }
-        });
-
-        // Handle Enter key press on task input to submit the form
-document.getElementById('taskInput').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        e.preventDefault(); // Prevent the default form submission
-        document.getElementById('taskForm').submit(); // Submit the form programmatically
+    .complete-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        padding: 2px 6px;
     }
-});
-</script>
-</body>
-</html>
+</style>
 {% endblock %}
