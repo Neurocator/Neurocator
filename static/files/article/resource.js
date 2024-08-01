@@ -178,7 +178,18 @@ const resources = [
         title: '17 Great Teaching Tools for Organization, Assessment and More',
         description: ''
     },
-
+    {
+        group: 'All',
+        link: 'static/files/article/neurodiversity-overview.jpg',
+        title: 'Neurodiversity Infographic',
+        description: 'Download Infographic'
+    },
+    {
+        group: 'All',
+        link: 'static/files/article/20 Classroom Management Tips (Overview).pdf',
+        title: '20 Classroom Management Tips',
+        description: 'Download Tips'
+    },
     // Add more resources as needed
 ];
 

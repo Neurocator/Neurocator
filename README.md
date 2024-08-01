@@ -12,4 +12,4 @@ How to run the server (Use these three changes):
 
 python3 -m venv .venv                                                 
 source .venv/bin/activate
-python3 main.py
+python3 app.py
