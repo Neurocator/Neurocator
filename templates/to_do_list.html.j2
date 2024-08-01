@@ -1,11 +1,23 @@
 {% extends "base.html.j2" %}
 
 {% block body %}
+<div class="mb-16">
+    <div class="banner">
+        <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
+                <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+                    To-Do List
+                </h1>
+                <p class="text-base text-gray-700 md:text-lg">Keep track of any task with this interactive to-do list!</p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="bg-img" id="backgroundImage"></div>
 <div class="content">
     <div class="container">
         <div class="list-container">
-            <h1>Make To-Do List</h1>
+            <h2>Make To-Do List</h2>
             <form action="/todo" method="POST" id="taskForm">
                 <input type="text" name="task" placeholder="Insert Task" id="taskInput" required>
                 <input type="submit" value="Add">
@@ -26,7 +38,7 @@
         </div>
         {% if tasks|length > 8 %}
         <div class="list-container">
-            <h1>Continued</h1>
+            <h2>Continued</h2>
             <ul id="additionalTaskList">
                 {% for task in tasks[8:] %}
                 <li class="{{ 'completed' if task[2] else '' }}">
@@ -43,23 +55,23 @@
     </div>
 </div>
 <script>
-    // JavaScript to submit form on Enter key press and refocus input
+    // JavaScript to handle form submission and task addition
     document.getElementById('taskForm').addEventListener('submit', function (e) {
         e.preventDefault(); // Prevent form from submitting the traditional way
         const taskInput = document.getElementById('taskInput');
         const taskList = document.getElementById('taskList');
         const additionalTaskList = document.getElementById('additionalTaskList');
 
-        const task = taskInput.value;
+        const task = taskInput.value.trim();
         if (task) {
             const li = document.createElement('li');
-            li.innerHTML = `
-                <form action="/complete/" method="POST" style="display: flex; align-items: center;">
+            li.innerHTML =
+                <form action="/complete" method="POST" style="display: flex; align-items: center;">
                     <input type="checkbox" onclick="this.form.submit()">
                     <span style="flex-grow: 1;">${task}</span>
-                    <button type="submit" formaction="/delete/${task.id}" class="delete-btn">🗑️</button>
+                    <button type="submit" formaction="/delete" class="delete-btn">🗑️</button>
                 </form>
-            `;
+            ;
             if (taskList.children.length < 8) {
                 taskList.appendChild(li);
             } else {
@@ -145,7 +157,7 @@
         border-radius: 10px 10px 0 0;
     }
 
-    .list-container h1 {
+    .list-container h2 {
         text-align: left;
         color: #333;
         margin-bottom: 20px;
@@ -215,5 +227,17 @@
         cursor: pointer;
         padding: 2px 6px;
     }
+
+    .banner {
+        background-color: #B0D39B;
+    }
+
+    .h1 {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 30px;
+    color: #ba80c4;
+    }
+    
 </style>
 {% endblock %}
