@@ -1,6 +1,4 @@
-#!/bin/sh
-'''exec' "/Users/markeneverdai/Desktop/SNP Reach B1/.venv/bin/python3.12" "$0" "$@"
-' '''
+#!/Users/markeneverdai/Desktop/Neurocator/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
