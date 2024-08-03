@@ -56,6 +56,8 @@ def signUp():
         inputUsername = request.values.get("username")
         userTypedPassword = request.values.get("password")
         securedPassword = generate_password_hash(userTypedPassword)
+        conn = psycopg2.connect(**db_params)
+        cur = conn.cursor()
         query = "SELECT username FROM users WHERE username=%s"
         cur.execute(query, (inputUsername,))
         conn.commit()
@@ -72,6 +74,8 @@ def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
     query = "SELECT password FROM users WHERE username=%s"
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
     cur.execute(query, (inputUsername,))
     conn.commit()
     results = cur.fetchall()
