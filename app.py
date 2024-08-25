@@ -47,6 +47,10 @@ init_sqlite_db()
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
+        return render_template('home.html.j2')
+@app.route('/login', methods=['GET'])
+def login():
+    if request.method == 'GET':
         return render_template('login.html.j2', username=session.get(session_username_key))
 @app.route('/signup', methods=['GET', 'POST'])
 def signUp():
@@ -69,7 +73,7 @@ def signUp():
             query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
             cur.execute(query, (inputEmail, inputUsername, securedPassword))
             conn.commit()
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
 @app.route('/checklogin', methods=['POST'])
 def checkLogin():
     inputUsername = request.values.get("username")
@@ -86,16 +90,16 @@ def checkLogin():
             session[session_username_key] = inputUsername
             return redirect(url_for('home'))
         else:
-            return redirect(url_for('index', incorrectLoginError=True))
+            return redirect(url_for('login', incorrectLoginError=True))
     else:
-        return redirect(url_for('index', incorrectLoginError=True))
+        return redirect(url_for('login', incorrectLoginError=True))
 def check_user_loggedin(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         print(session.get(session_username_key))
         if session.get(session_username_key) is None:
             # Redirect to login page if not logged in
-            return redirect(url_for('index'))
+            return redirect(url_for('login'))
         return f(*args, **kwargs)  # Continue to the requested page if logged in
     return decorated_function
 @app.route('/home', methods=['GET', 'POST'])
