@@ -2,6 +2,7 @@ import os
 import psycopg2
 import logging
 import sqlite3
+from functools import wraps
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -88,10 +89,20 @@ def checkLogin():
             return redirect(url_for('index', incorrectLoginError=True))
     else:
         return redirect(url_for('index', incorrectLoginError=True))
+def check_user_loggedin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        print(session.get(session_username_key))
+        if session.get(session_username_key) is None:
+            # Redirect to login page if not logged in
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)  # Continue to the requested page if logged in
+    return decorated_function
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html.j2')
 @app.route('/forum', methods=['GET', 'POST'])
+@check_user_loggedin
 def forum():
     conn = psycopg2.connect(**db_params)
     cur = conn.cursor()
@@ -112,9 +123,8 @@ def forum():
         posts.append(post)
     return render_template('forum.html.j2', posts=posts)
 @app.route('/addpost', methods=['GET', 'POST'])
+@check_user_loggedin
 def addPost():
-    if session.get(session_username_key) is None:
-        return redirect(url_for('index'))
     if request.method == 'GET':
         username = session.get(session_username_key)
         return render_template('addpost.html.j2', username=username)
@@ -133,6 +143,7 @@ def addPost():
         conn.commit()
         return redirect(url_for('forum'))
 @app.route('/live', methods=['GET', 'POST'])
+@check_user_loggedin
 def live():
     if request.method == 'POST':
         points = request.form.getlist('points')
@@ -171,6 +182,7 @@ def resources():
 def about():
     return render_template('about_us.html.j2')
 @app.route('/todo', methods=['GET', 'POST'])
+@check_user_loggedin
 def to_do_list():
     if request.method == 'POST':
         task = request.form['task']
