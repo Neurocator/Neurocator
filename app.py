@@ -51,8 +51,6 @@ def index():
 @app.route('/login', methods=['GET'])
 def login():
     print(session.get(session_username_key))
-    if session.get(session_username_key) is not None:
-        return render_template('home.html.j2', username=session.get(session_username_key))
     if request.method == 'GET':
         return render_template('login.html.j2', username=session.get(session_username_key))
 @app.route('/logout', methods=['GET'])
