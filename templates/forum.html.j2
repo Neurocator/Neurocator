@@ -27,6 +27,7 @@
                     <p class="post-info">Posted by {{ post['username'] }} on {{ post['date'] }}</p>
                     <p class="post-title">{{ post['title'] }}</p>
                     <p class="post-content">{{ post['content'] }}</p>
+                    <a href="{{ url_for('thread', post_id=post['id']) }}">Reply</a>
                 </div>
             {% endfor %}
         {% else %}

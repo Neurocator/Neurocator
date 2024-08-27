@@ -18,18 +18,22 @@ db_params = {
     'port': os.getenv('PGPORT', '5432'),
     'sslmode': 'require'
 }
+
 conn = psycopg2.connect(**db_params)
 cur = conn.cursor()
+
 # Utility functions
 def is_point_covered(transcript_tokens, point_text):
     return point_text.lower() in transcript_tokens
 def process_transcript(transcript):
     return transcript.split()
+
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 session_username_key = 'neurocator_username'
 app.config['SECRET_KEY'] = "bflerjvnlkrv#123"
+
 # Ensure SQLite tasks table exists
 def init_sqlite_db():
     with sqlite3.connect('database.db') as conn:
@@ -42,11 +46,13 @@ def init_sqlite_db():
             )
         ''')
         conn.commit()
+
 init_sqlite_db()
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
         return render_template('login.html.j2', username=session.get(session_username_key))
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signUp():
     if request.method == 'GET':
@@ -69,6 +75,7 @@ def signUp():
             cur.execute(query, (inputEmail, inputUsername, securedPassword))
             conn.commit()
             return redirect(url_for('index'))
+        
 @app.route('/checklogin', methods=['POST'])
 def checkLogin():
     inputUsername = request.values.get("username")
@@ -88,9 +95,11 @@ def checkLogin():
             return redirect(url_for('index', incorrectLoginError=True))
     else:
         return redirect(url_for('index', incorrectLoginError=True))
+    
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html.j2')
+
 @app.route('/forum', methods=['GET', 'POST'])
 def forum():
     conn = psycopg2.connect(**db_params)
@@ -111,6 +120,7 @@ def forum():
         }
         posts.append(post)
     return render_template('forum.html.j2', posts=posts)
+
 @app.route('/addpost', methods=['GET', 'POST'])
 def addPost():
     if session.get(session_username_key) is None:
@@ -130,8 +140,52 @@ def addPost():
         queryVars = (username, inputTitle, inputContent, (date_str,))
         cur.execute(query, queryVars)
         conn.commit()
-        conn.commit()
         return redirect(url_for('forum'))
+    
+@app.route('/thread/<int:post_id>', methods=['GET', 'POST'])
+def thread(post_id):
+    if request.method == 'POST':
+        reply_content = request.form['reply']
+        reply_query = "INSERT INTO replies (content, post_id) VALUES (%s, %s)" # MAKE THIS INCLUDE TTILE + CONTENT
+        reply_query_vars = (reply_content, post_id) # maybe here too?
+        conn = psycopg2.connect(**db_params)
+        cur = conn.cursor()
+        cur.execute(reply_query, reply_query_vars)
+        conn.commit()
+        return redirect(url_for('thread', post_id=post_id))
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
+    query = "SELECT username, title, content, date FROM posts WHERE id=%s"
+    queryVars = (post_id, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    post_rows = cur.fetchall()  
+    posts = []
+    for row in post_rows:
+        post = {
+            'username': row[0],
+            'title': row[1],
+            'content': row[2],
+            'date': row[3]
+        }
+        posts.append(post)
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
+    query = "SELECT content, post_id from replies WHERE post_id=%s"
+    queryVars = (post_id, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    replies_rows = cur.fetchall()  
+    replies = []
+    for row in replies_rows:
+        reply = {
+            'content': row[0],
+            'post_id': row[1]
+        }
+        replies.append(reply)
+    return render_template('thread.html.j2', post=posts, replies=replies)
+
+    
 @app.route('/live', methods=['GET', 'POST'])
 def live():
     if request.method == 'POST':
@@ -139,6 +193,7 @@ def live():
         points = [{"text": point, "covered": False} for point in points]
         return render_template('live.html.j2', points=points)
     return render_template('live.html.j2', points=[])
+
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     try:
@@ -161,15 +216,19 @@ def transcribe():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
+    
 @app.route('/longtermplanning')
 def planning():
     return render_template('longtermplanning.html.j2')
+
 @app.route('/resources')
 def resources():
     return render_template('resources.html.j2')
+
 @app.route('/about')
 def about():
     return render_template('about_us.html.j2')
+
 @app.route('/todo', methods=['GET', 'POST'])
 def to_do_list():
     if request.method == 'POST':
@@ -185,6 +244,7 @@ def to_do_list():
         tasks = [(rowid, task, completed) for rowid, task, completed in c.fetchall()]
     print(f"Tasks: {tasks}")  # Debug output
     return render_template('to_do_list.html.j2', tasks=tasks)
+
 @app.route('/complete/<int:task_id>', methods=['POST'])
 def complete_task(task_id):
     try:
@@ -196,6 +256,7 @@ def complete_task(task_id):
     except Exception as e:
         print(f"Error completing task {task_id}: {e}")
         return jsonify({"error": str(e)}), 500
+    
 @app.route('/delete/<int:task_id>', methods=['POST'])
 def delete_task(task_id):
     try:
@@ -207,9 +268,11 @@ def delete_task(task_id):
     except Exception as e:
         print(f"Error deleting task {task_id}: {e}")
         return jsonify({"error": str(e)}), 500
+    
 @app.route('/faq')
 def faq():
     return render_template('faq.html.j2')
+
 @app.route('/download/<path:filename>')
 def download(filename):
     directory = os.path.join(app.root_path, 'static/files/article')
