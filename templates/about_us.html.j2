@@ -159,124 +159,140 @@
         </div>
     </div>
     
-    <!-- First Row -->
-    <div class="team-container">
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Aanika Tangirala.png" alt="Aanika Tangirala">
-            <div class="overlay">
-                <p>Phone: 123-456-7890</p>
-                <p>Email: aanika.tangirala@outlook.com</p>
-            </div>
-            <h3>Aanika Tangirala</h3>
-            <p>Coding Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Alice Lee.png" alt="Alice Lee">
-            <div class="overlay">
-                <p>Phone: 123-456-7890</p>
-                <p>Email: alice@example.com</p>
-            </div>
-            <h3>Alice Lee</h3>
-            <p>Design Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Brandon Kim.png" alt="Brandon Kim">
-            <div class="overlay">
-                <p>Phone: 234-567-8901</p>
-                <p>Email: brandon@example.com</p>
-            </div>
-            <h3>Brandon Kim</h3>
-            <p>Research Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Christine Ziemann.png" alt="Christine Ziemann">
-            <div class="overlay">
-                <p>Phone: 345-678-9012</p>
-                <p>Email: christine@example.com</p>
-            </div>
-            <h3>Christine Ziemann</h3>
-            <p>Research Team</p>
-        </div>
-    </div>
-    
-    <!-- Second Row -->
-    <div class="team-container">
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Jasmine Chen.png" alt="Jasmine Chen">
-            <div class="overlay">
-                <p>Phone: 456-789-0123</p>
-                <p>Email: jasminezh58@gmail.com</p>
-            </div>
-            <h3>Jasmine Chen</h3>
-            <p>Good Guy + Design Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Jasmine Seeto.png" alt="Jasmine Seeto">
-            <div class="overlay">
-                <p>Phone: 567-890-1234</p>
-                <p>Email: jasmine.seeto@example.com</p>
-            </div>
-            <h3>Jasmine Seeto</h3>
-            <p>Research Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Mark Dai.png" alt="Mark Dai">
-            <div class="overlay">
-                <p>Phone: 310-968-1337</p>
-                <p>Email: markenever.d@gmail.com</p>
-            </div>
-            <h3>Mark Dai</h3>
-            <p>Coding Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Stefan Popa-Bratu.png" alt="Stefan Popa-Bratu">
-            <div class="overlay">
-                <p>Phone: 789-012-3456</p>
-                <p>Email: stefan@example.com</p>
-            </div>
-            <h3>Stefan Popa-Bratu</h3>
-            <p>Design Team</p>
-        </div>
-    </div>
 
-    <!-- Third Row -->
-    <div class="team-container">
-        <div class="team-member">
-            <img src="static/aboutus_pictures/William Yang.png" alt="William Yang">
-            <div class="overlay">
-                <p>Phone: 890-123-4567</p>
-                <p>Email: wilyan090@gmail.com</p>
-            </div>
-            <h3>William Yang</h3>
-            <p>Coding Team</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Cai Zhen.png" alt="William Yang">
-            <div class="overlay">
-                <p>Phone: 890-123-4567</p>
-                <p>Email: caizhen@stanford.edu</p>
-            </div>
-            <h3>Cai Zhen</h3>
-            <p>Camp Leader</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Cassidy Miller.png" alt="William Yang">
-            <div class="overlay">
-                <p>Phone: 890-123-4567</p>
-                <p>Email: cassidymiller@umail.ucsb.edu</p>
-            </div>
-            <h3>Cassidy Miller</h3>
-            <p>Camp Leader</p>
-        </div>
-        <div class="team-member">
-            <img src="static/aboutus_pictures/Rishi Upadhyay.png" alt="William Yang">
-            <div class="overlay">
-                <p>Phone: 890-123-4567</p>
-                <p>Email: rishi9upadhyay@gmail.com</p>
-            </div>
-            <h3>Rishi Upadhaya</h3>
-            <p>Camp Leader</p>
-        </div>
+    <!-- Team Members Container -->
+    <div class="team-container" id="team-container">
+        <!-- Team members will be inserted here by JavaScript -->
     </div>
 </div>
+
+<script>
+    // JavaScript to dynamically insert team profiles
+
+    document.addEventListener("DOMContentLoaded", function() {
+        // Array of team members
+        const teamMembers = [
+            {
+                name: "Aanika Tangirala",
+                role: "Coding Team",
+                image: "static/aboutus_pictures/Aanika Tangirala.png",
+                phone: "123-456-7890",
+                email: "aanika.tangirala@outlook.com"
+            },
+            {
+                name: "Alice Lee",
+                role: "Design Team",
+                image: "static/aboutus_pictures/Alice Lee.png",
+                phone: "123-456-7890",
+                email: "alice@example.com"
+            },
+            {
+                name: "Brandon Kim",
+                role: "Research Team",
+                image: "static/aboutus_pictures/Brandon Kim.png",
+                phone: "234-567-8901",
+                email: "brandon@example.com"
+            },
+            {
+                name: "Christine Ziemann",
+                role: "Research Team",
+                image: "static/aboutus_pictures/Christine Ziemann.png",
+                phone: "345-678-9012",
+                email: "christine@example.com"
+            },
+            {
+                name: "Jasmine Chen",
+                role: "Good Guy + Design Team",
+                image: "static/aboutus_pictures/Jasmine Chen.png",
+                phone: "456-789-0123",
+                email: "jasminezh58@gmail.com"
+            },
+            {
+                name: "Jasmine Seeto",
+                role: "Research Team",
+                image: "static/aboutus_pictures/Jasmine Seeto.png",
+                phone: "567-890-1234",
+                email: "jasmine.seeto@example.com"
+            },
+            {
+                name: "Mark Dai",
+                role: "Coding Team",
+                image: "static/aboutus_pictures/Mark Dai.png",
+                phone: "310-968-1337",
+                email: "markenever.d@gmail.com"
+            },
+            {
+                name: "Stefan Popa-Bratu",
+                role: "Design Team",
+                image: "static/aboutus_pictures/Stefan Popa-Bratu.png",
+                phone: "789-012-3456",
+                email: "stefan@example.com"
+            },
+            {
+                name: "William Yang",
+                role: "Coding Team",
+                image: "static/aboutus_pictures/William Yang.png",
+                phone: "890-123-4567",
+                email: "wilyan090@gmail.com"
+            },
+            {
+                name: "Cai Zhen",
+                role: "Camp Leader",
+                image: "static/aboutus_pictures/Cai Zhen.png",
+                phone: "890-123-4567",
+                email: "caizhen@stanford.edu"
+            },
+            {
+                name: "Cassidy Miller",
+                role: "Camp Leader",
+                image: "static/aboutus_pictures/Cassidy Miller.png",
+                phone: "890-123-4567",
+                email: "cassidymiller@umail.ucsb.edu"
+            },
+            {
+                name: "Rishi Upadhaya",
+                role: "Camp Leader",
+                image: "static/aboutus_pictures/Rishi Upadhyay.png",
+                phone: "890-123-4567",
+                email: "rishi9upadhyay@gmail.com"
+            }
+        ];
+
+        const container = document.getElementById('team-container');
+
+        // Function to create team member element
+        function createTeamMember(member) {
+            const div = document.createElement('div');
+            div.className = 'team-member';
+
+            const img = document.createElement('img');
+            img.src = member.image;
+            img.alt = member.name;
+            div.appendChild(img);
+
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            overlay.innerHTML = `
+                <p>Phone: ${member.phone}</p>
+                <p>Email: ${member.email}</p>
+            `;
+            div.appendChild(overlay);
+
+            const name = document.createElement('h3');
+            name.textContent = member.name;
+            div.appendChild(name);
+
+            const role = document.createElement('p');
+            role.textContent = member.role;
+            div.appendChild(role);
+
+            return div;
+        }
+
+        // Populate the container with team members
+        teamMembers.forEach(member => {
+            container.appendChild(createTeamMember(member));
+        });
+    });
+</script>
 {% endblock %}
