@@ -2,6 +2,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% include "/static/style.css" %}
 {% endblock %}
 
 {% block body %}
@@ -87,7 +88,7 @@ li {
 }
 
 button[type="submit"] {
-        display: inline-block;
+        display: inline;
         width: 100%;
         padding: 10px;
         background-color: #b0d39b;
@@ -153,7 +154,7 @@ button[type="submit"]:hover {
         padding: 20px;
         border-bottom: 1px solid #ddd;
         padding-bottom: 50px;
-        margin-bottom: 20px;
+        margin-top: 20px;
     }
 
     .individual-post:last-child {

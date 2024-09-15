@@ -167,8 +167,8 @@ def addPost():
 def thread(post_id):
     if request.method == 'POST':
         reply_content = request.form['reply']
-        reply_query = "INSERT INTO replies (content, post_id) VALUES (%s, %s)" # MAKE THIS INCLUDE TTILE + CONTENT
-        reply_query_vars = (reply_content, post_id) # maybe here too?
+        reply_query = "INSERT INTO replies (content, post_id) VALUES (%s, %s)"
+        reply_query_vars = (reply_content, post_id)
         conn = psycopg2.connect(**db_params)
         cur = conn.cursor()
         cur.execute(reply_query, reply_query_vars)
