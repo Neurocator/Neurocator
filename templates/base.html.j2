@@ -7,19 +7,19 @@
     <title>Neurocator!</title>
     <!-- Add your CSS framework here, for example Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="static/style.css" />
-    <link rel="icon" type="image/x-icon" href="static/IMG_1373.jpg"/>
-    <link rel="icon" type="image/x-icon" href="../static/home_icons/logo.png"/>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" />
+    <link rel="icon" type="image/x-icon" href="../static/IMG_1373.jpg"/>
+    <link rel="icon" type="image/x-icon" href="../static/logo.png"/>
 </head>
 
-<body>
+<body>  
     <!-- Navbar -->
     <nav class="shadow" style="background-color: #f0d3d3;">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <a href="/" class="flex-shrink-0 flex items-center">
-                        <img src="static/logo-new.svg" class="h-10 w-10">
+                        <img src="../static/logo-new.svg" class="h-10 w-10">
                         <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">Neurocator!</span>
                     </a>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -33,7 +33,11 @@
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <a href="/" class="logout-button ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Logout</a>
+                    {%if username == None%}
+                        <a href="/login" class="logout-button ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">login</a>
+                    {%else%}
+                        <a href="/logout" class="logout-button ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">Logout</a>
+                    {% endif %}
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
                     <!-- Mobile menu button -->

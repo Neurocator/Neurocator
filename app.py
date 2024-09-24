@@ -2,6 +2,7 @@ import os
 import psycopg2
 import logging
 import sqlite3
+from functools import wraps
 from flask import Flask, request, render_template, jsonify, redirect, url_for, session, send_from_directory
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,7 +21,6 @@ db_params = {
     'sslmode': 'require'
 }
 
-# Establish a PostgreSQL connection
 conn = psycopg2.connect(**db_params)
 cur = conn.cursor()
 
@@ -59,8 +59,19 @@ init_sqlite_db()
 @app.route('/', methods=['GET'])
 def index():
     if request.method == 'GET':
+        return render_template('home.html.j2')
+@app.route('/login', methods=['GET'])
+def login():
+    print(session.get(session_username_key))
+    if request.method == 'GET':
         return render_template('login.html.j2', username=session.get(session_username_key))
-
+@app.route('/logout', methods=['GET'])
+def logout():
+    print(session.get(session_username_key))
+    session.__setitem__(session_username_key, None)
+    print(session.get(session_username_key))
+    if request.method == 'GET':
+        return render_template('home.html.j2', username=None)
 @app.route('/signup', methods=['GET', 'POST'])
 def signUp():
     if request.method == 'GET':
@@ -80,8 +91,8 @@ def signUp():
             query = "INSERT INTO users (email, username, password) VALUES (%s, %s, %s)"
             cur.execute(query, (inputEmail, inputUsername, securedPassword))
             conn.commit()
-            return redirect(url_for('index'))
-
+            return redirect(url_for('login'))
+        
 @app.route('/checklogin', methods=['POST'])
 def checkLogin():
     inputUsername = request.values.get("username")
@@ -97,15 +108,25 @@ def checkLogin():
             session[session_username_key] = inputUsername
             return redirect(url_for('home'))
         else:
-            return redirect(url_for('index', incorrectLoginError=True))
+            return redirect(url_for('login', incorrectLoginError=True))
     else:
-        return redirect(url_for('index', incorrectLoginError=True))
-
+        return redirect(url_for('login', incorrectLoginError=True))
+    
+def check_user_loggedin(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        print(session.get(session_username_key))
+        if session.get(session_username_key) is None:
+            # Redirect to login page if not logged in
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)  # Continue to the requested page if logged in
+    return decorated_function
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html.j2')
 
 @app.route('/forum', methods=['GET', 'POST'])
+@check_user_loggedin
 def forum():
     conn = psycopg2.connect(**db_params)
     cur = conn.cursor()
@@ -127,9 +148,8 @@ def forum():
     return render_template('forum.html.j2', posts=posts)
 
 @app.route('/addpost', methods=['GET', 'POST'])
+@check_user_loggedin
 def addPost():
-    if session.get(session_username_key) is None:
-        return redirect(url_for('index'))
     if request.method == 'GET':
         username = session.get(session_username_key)
         return render_template('addpost.html.j2', username=username)
@@ -149,8 +169,53 @@ def addPost():
         cur.execute(query, queryVars)
         conn.commit()
         return redirect(url_for('forum'))
+    
+@app.route('/thread/<int:post_id>', methods=['GET', 'POST'])
+def thread(post_id):
+    if request.method == 'POST':
+        reply_content = request.form['reply']
+        reply_query = "INSERT INTO replies (content, post_id) VALUES (%s, %s)"
+        reply_query_vars = (reply_content, post_id)
+        conn = psycopg2.connect(**db_params)
+        cur = conn.cursor()
+        cur.execute(reply_query, reply_query_vars)
+        conn.commit()
+        return redirect(url_for('thread', post_id=post_id))
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
+    query = "SELECT username, title, content, date FROM posts WHERE id=%s"
+    queryVars = (post_id, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    post_rows = cur.fetchall()  
+    posts = []
+    for row in post_rows:
+        post = {
+            'username': row[0],
+            'title': row[1],
+            'content': row[2],
+            'date': row[3]
+        }
+        posts.append(post)
+    conn = psycopg2.connect(**db_params)
+    cur = conn.cursor()
+    query = "SELECT content, post_id from replies WHERE post_id=%s"
+    queryVars = (post_id, )
+    cur.execute(query, queryVars)
+    conn.commit()
+    replies_rows = cur.fetchall()  
+    replies = []
+    for row in replies_rows:
+        reply = {
+            'content': row[0],
+            'post_id': row[1]
+        }
+        replies.append(reply)
+    return render_template('thread.html.j2', post=posts, replies=replies)
 
+    
 @app.route('/live', methods=['GET', 'POST'])
+@check_user_loggedin
 def live():
     if request.method == 'POST':
         points = request.form.getlist('points')
@@ -185,7 +250,7 @@ def transcribe():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/longtermplanning')
 def planning():
     return render_template('longtermplanning.html.j2')
@@ -199,6 +264,7 @@ def about():
     return render_template('about_us.html.j2')
 
 @app.route('/todo', methods=['GET', 'POST'])
+@check_user_loggedin
 def to_do_list():
     username = session.get(session_username_key)
     if username is None:
@@ -235,7 +301,7 @@ def complete_task(task_id):
     except Exception as e:
         print(f"Error completing task {task_id} for {username}: {e}")
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/delete/<int:task_id>', methods=['POST'])
 def delete_task(task_id):
     username = session.get(session_username_key)
@@ -251,7 +317,7 @@ def delete_task(task_id):
     except Exception as e:
         print(f"Error deleting task {task_id} for {username}: {e}")
         return jsonify({"error": str(e)}), 500
-
+    
 @app.route('/faq')
 def faq():
     return render_template('faq.html.j2')

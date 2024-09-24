@@ -1,0 +1,206 @@
+{% extends 'base.html.j2' %}
+
+{% block head %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap">
+{% include "/static/style.css" %}
+{% endblock %}
+
+{% block body %}
+
+<!-- Main Content -->
+<div class="mb-16"> 
+    <div class="banner">
+        <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div class="max-w-xxlg mb-10 md:mx-auto sm:text-center xlg:max-w-2xl md:mb-12">
+                <h1 class="max-w-xlg mb-6 text-5xl font-bold leading-none tracking-tight text-gray-900 sm:text-7xl md:mx-auto">
+                    Welcome to the forum!
+                </h1>
+                    <h1 class="h1">Post and connect with other neurodiverse teachers!</h1>
+                <p class="text-base text-gray-700 md:text-lg"></p>
+            </div>
+        </div>
+    </div>
+
+    {% for post in post %}
+    <div class="individual-post gap-8">
+        <p class="post-info">Posted by {{ post['username'] }} on {{ post['date'] }}</p>
+        <p class="post-title">{{ post['title'] }}</p>
+        <p class="post-content">{{ post['content'] }}</p>    
+    </div>
+    {% endfor %}
+
+    <h3>Replies</h3>
+    {% if replies|length %}
+            {% for reply in replies %}
+                <div class="individual-reply gap-8">
+                    <li>{{ reply['content'] }}</li>
+                </div>
+            {% endfor %}
+    {% endif %}
+
+
+    <h3>Post a Reply</h3>
+    <form method="post">
+        <textarea name="reply" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <a href="{{ url_for('forum') }}">Back to posts</a>
+
+    <style>
+
+h1.textstyle {
+    font-family: 'OpenDyslexic', sans-serif;
+  }
+
+.h1 {
+    text-align: center;
+    padding-top: 20px;
+    font-size: 30px;
+    color: #ba80c4;
+  }
+
+.recentposts {
+    font-size: 30px;
+    padding-top: 20px;
+}
+
+body {
+    font-family: 'OpenDyslexic', sans-serif;
+    background-color: #f0e3ce;
+  }
+
+a {
+    color: #0066cc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+li {
+    margin-bottom: 1em;
+    background-color: white;
+    padding: 1em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button[type="submit"] {
+        display: inline;
+        width: 100%;
+        padding: 10px;
+        background-color: #b0d39b;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+
+button[type="submit"]:hover {
+        background-color: #a1c888;
+    }
+
+.banner {
+        background-color: #B0D39B;
+    }
+
+.bg-brand-primary {
+        background-color: #ba80c4;
+    }
+
+.text-brand-primary {
+        color: #8fac7d;
+    }
+
+    .group-button.active {
+        border: 2px solid #B0D39B;
+    }
+
+    .resource-card:hover {
+        background-color: #f6efe6;
+    }
+
+    .border-2.border-black {
+        border: 2px solid black;
+    }
+
+    .recentposts {
+        text-align: center;
+        font-size: 1.75rem;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .posts {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        padding-bottom: 30px;
+        gap: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .individual-post {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 50px;
+        margin-top: 20px;
+    }
+
+    .individual-post:last-child {
+        border-bottom: none;
+    }
+
+    .addpostbutton {
+        height: 100px;
+        width: 100px;
+        position: fixed;
+        bottom: 0px;
+        right: 25px;
+    }
+
+    .addpost {
+        position: fixed;
+        bottom: 80px;
+        right: 25px;
+        text-align: right;
+    }
+
+    .post-info {
+        font-size: 0.875rem;
+        color: #777;
+        margin-bottom: 10px;
+    }
+
+    .post-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .post-content {
+        font-size: 1rem;
+        color: #555;
+    }
+
+    .add-post-link {
+        color: #ba80c4;
+        text-decoration: underline;
+    }
+
+    .add-post-link:hover {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
