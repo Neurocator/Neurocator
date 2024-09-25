@@ -29,15 +29,16 @@
     </div>
     {% endfor %}
 
-    <h3>Replies</h3>
+    <h3 class="replies-title">Replies</h3>
     {% if replies|length %}
+        <ul class="replies-list">
             {% for reply in replies %}
-                <div class="individual-reply gap-8">
+                <div class="individual-reply">
                     <li>{{ reply['content'] }}</li>
                 </div>
             {% endfor %}
+        </ul>
     {% endif %}
-
 
     <h3>Post a Reply</h3>
     <form method="post">
@@ -49,45 +50,46 @@
 
     <style>
 
-h1.textstyle {
-    font-family: 'OpenDyslexic', sans-serif;
-  }
+    h1.textstyle {
+        font-family: 'OpenDyslexic', sans-serif;
+    }
 
-.h1 {
-    text-align: center;
-    padding-top: 20px;
-    font-size: 30px;
-    color: #ba80c4;
-  }
+    .h1 {
+        text-align: center;
+        padding-top: 20px;
+        font-size: 30px;
+        color: #ba80c4;
+    }
 
-.recentposts {
-    font-size: 30px;
-    padding-top: 20px;
-}
+    .recentposts {
+        font-size: 30px;
+        padding-top: 20px;
+    }
 
-body {
-    font-family: 'OpenDyslexic', sans-serif;
-    background-color: #f0e3ce;
-  }
+    body {
+        font-family: 'OpenDyslexic', sans-serif;
+        background-color: #f0e3ce;
+    }
 
-a {
-    color: #0066cc;
-    text-decoration: none;
-}
+    a {
+        color: #0066cc;
+        text-decoration: none;
+    }
 
-a:hover {
-    text-decoration: underline;
-}
+    a:hover {
+        text-decoration: underline;
+    }
 
-li {
-    margin-bottom: 1em;
-    background-color: white;
-    padding: 1em;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
+    li {
+        margin-bottom: 1em;
+        background-color: white;
+        padding: 1em;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        text-align: center;
+    }
 
-button[type="submit"] {
+    button[type="submit"] {
         display: inline;
         width: 100%;
         padding: 10px;
@@ -99,19 +101,19 @@ button[type="submit"] {
         cursor: pointer;
     }
 
-button[type="submit"]:hover {
+    button[type="submit"]:hover {
         background-color: #a1c888;
     }
 
-.banner {
+    .banner {
         background-color: #B0D39B;
     }
 
-.bg-brand-primary {
+    .bg-brand-primary {
         background-color: #ba80c4;
     }
 
-.text-brand-primary {
+    .text-brand-primary {
         color: #8fac7d;
     }
 
@@ -202,5 +204,29 @@ button[type="submit"]:hover {
     .add-post-link:hover {
         text-decoration: none;
     }
-</style>
+
+    .replies-title {
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: 20px;
+        color: #333;
+    }
+
+    .replies-list {
+        list-style-type: none;
+        padding: 0;
+        text-align: center;
+    }
+
+    .individual-reply {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    </style>
 {% endblock %}
