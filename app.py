@@ -97,20 +97,25 @@ def signUp():
 def checkLogin():
     inputUsername = request.values.get("username")
     inputPassword = request.values.get("password")
+    
     query = "SELECT password FROM users WHERE username=%s"
-
     cur.execute(query, (inputUsername,))
-    conn.commit()
+    
     results = cur.fetchall()
+    
     if len(results) == 1:
         hashedPassword = results[0][0]
         if check_password_hash(hashedPassword, inputPassword):
+            # Store the username in session
             session[session_username_key] = inputUsername
-            return redirect(url_for('home'))
+            logging.info(f"User {inputUsername} successfully logged in.")
+            return redirect(url_for('home'))  # Redirect to the home page after login
         else:
-            return redirect(url_for('login', incorrectLoginError=True))
+            logging.warning(f"Login attempt failed for user {inputUsername}: Incorrect password.")
+            return redirect(url_for('login', incorrectLoginError=True))  # Redirect to login with error
     else:
-        return redirect(url_for('login', incorrectLoginError=True))
+        logging.warning(f"Login attempt failed for user {inputUsername}: Username not found.")
+        return redirect(url_for('login', incorrectLoginError=True))  # Redirect to login with error
     
 def check_user_loggedin(f):
     @wraps(f)
